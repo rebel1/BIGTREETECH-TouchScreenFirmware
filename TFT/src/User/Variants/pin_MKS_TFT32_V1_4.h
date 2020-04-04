@@ -93,10 +93,10 @@
 
 // Extend function(PS_ON, filament_detect)
 #ifndef PS_ON_PIN
-  //#define PS_ON_PIN      PD12
+  #define PS_ON_PIN      PB0
 #endif
 #ifndef FIL_RUNOUT_PIN
-  //#define FIL_RUNOUT_PIN PD11
+  #define FIL_RUNOUT_PIN PB1
 #endif
 
 //#define LED_color_PIN PC7
