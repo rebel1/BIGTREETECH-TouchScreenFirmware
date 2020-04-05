@@ -92,12 +92,8 @@
 #define USE_USB_OTG_FS
 
 // Extend function(PS_ON, filament_detect)
-#ifndef PS_ON_PIN
-  #define PS_ON_PIN      PB0
-#endif
-#ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN PB1
-#endif
+#define PS_ON_PIN      PB0
+#define FIL_RUNOUT_PIN PB1
 
 //#define LED_color_PIN PC7
 
