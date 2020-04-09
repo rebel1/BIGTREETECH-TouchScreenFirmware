@@ -320,7 +320,7 @@ void menuPrintFromSource(void)
                 free(gnew);
               }
               //-load bmp preview in flash if file exists - end
-            }*/
+            }
             infoMenu.menu[++infoMenu.cur] = menuBeforePrinting;
           }
         }
