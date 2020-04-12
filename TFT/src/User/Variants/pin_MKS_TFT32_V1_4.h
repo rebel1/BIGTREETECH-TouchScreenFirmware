@@ -1,36 +1,6 @@
 #ifndef _PIN_MKS_TFT32_V1_4_H_ // modify to actual filename !!!
 #define _PIN_MKS_TFT32_V1_4_H_ // modify to actual filename !!!
 
-
- #define SPEAKER_Pin             GPIO_Pin_2
- #define SPEAKER_GPIO_Port       GPIOA
- #define FILAMENT_DI_Pin         GPIO_Pin_0
- #define FILAMENT_DI_GPIO_Port   GPIOB
- #define POWER_DI_Pin            GPIO_Pin_1
- #define POWER_DI_GPIO_Port      GPIOB
- #define LCD_nWR_Pin             GPIO_Pin_14
- #define LCD_nWR_GPIO_Port       GPIOB
- #define LCD_RS_Pin              GPIO_Pin_13
- #define LCD_RS_GPIO_Port        GPIOD
- #define LCD_BACKLIGHT_Pin       GPIO_Pin_14
- #define LCD_BACKLIGHT_GPIO_Port GPIOD
- #define LCD_nRD_Pin             GPIO_Pin_15
- #define LCD_nRD_GPIO_Port       GPIOD
- #define LCD_nCS_Pin             GPIO_Pin_8
- #define LCD_nCS_GPIO_Port       GPIOC
- #define SDCARD_nCS_Pin          GPIO_Pin_11
- #define SDCARD_nCS_GPIO_Port    GPIOD
- #define SDCARD_DETECT_Pin       GPIO_Pin_15
- #define SDCARD_DETECT_GPIO_Port GPIOB
- #define TOUCH_DI_Pin            GPIO_Pin_5
- #define TOUCH_DI_GPIO_Port      GPIOC
- #define TOUCH_nCS_Pin           GPIO_Pin_9
- #define TOUCH_nCS_GPIO_Port     GPIOC
- #define WIFI_DI_Pin             GPIO_Pin_9
- #define WIFI_DI_GPIO_Port       GPIOA
- #define FLASH_nCS_Pin           GPIO_Pin_9
- #define FLASH_nCS_GPIO_Port     GPIOB
-
 //MCU type (STM32F10x, STM32F2xx)
 #include "stm32f10x.h"
 
@@ -124,7 +94,7 @@
 #define USE_USB_OTG_FS
 
 // Extend function(PS_ON, filament_detect)
-#define PS_ON_PIN      PB0
+//#define PS_ON_PIN      PB0
 #define FIL_RUNOUT_PIN PB1
 
 //#define LED_COLOR_PIN PC7

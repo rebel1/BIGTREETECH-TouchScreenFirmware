@@ -220,7 +220,7 @@
 #define PS_ON_ACTIVE_HIGH    true   // Set 'false' for ATX (1), 'true' for X-Box (2)
 
 // Filament runout detection
-#define FIL_RUNOUT_INVERTING false  // Set to false to invert the logic of the sensor.
+#define FIL_RUNOUT_INVERTING true  // Set to false to invert the logic of the sensor.
 #define FIL_NOISE_THRESHOLD  100   // 100ms,  Pause print when filament runout is detected for 100ms.
 
 // Smart filament runout detection
@@ -324,12 +324,12 @@
  * Enable Start & End G-code in SETTINGS -> FEATURE menu.
  */
 // Start G-code - run this G-code before starting print
-#define PRINT_START_GCODE "" // Raise Z 10mm before homing X & Y
+#define PRINT_START_GCODE "G28 XY R10\n" // Raise Z 10mm before homing X & Y
 
 // End G-code - run this G-code after finishing print
-#define PRINT_END_GCODE "" // Switch to absolute positioning, reduce filament pressure by performing small retract, reset extruder position, disable steppers
+#define PRINT_END_GCODE "G90\nG1 E-4\nG92 E0\nM18\n" // Switch to absolute positioning, reduce filament pressure by performing small retract, reset extruder position, disable steppers
 
 // Cancel G-code - run this G-code after canceling print
-#define CANCEL_PRINT_GCODE "" // Raise Z 10mm before homing X & Y
+#define CANCEL_PRINT_GCODE "G28 XY R10\n" // Raise Z 10mm before homing X & Y
 
 #endif
