@@ -27,7 +27,7 @@
     #define ES_ABL                  "ABL"
     #define ES_MBL                  "MBL"
     #define ES_MBL_START            "Start MBL"
-    #define ES_MBL_NEXT_POINT       "Next Point"
+    #define ES_MBL_NEXT_POINT       "n. Point"
     #define ES_BLTOUCH              "Bltouch"
     #define ES_BLTOUCH_TEST         "Probar"
     #define ES_BLTOUCH_DEPLOY       "Desplegar"

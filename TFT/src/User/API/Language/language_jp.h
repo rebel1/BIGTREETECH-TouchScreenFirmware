@@ -27,7 +27,7 @@
     #define JP_ABL                  "自動調整"
     #define JP_MBL                  "MBL"
     #define JP_MBL_START            "Start MBL"
-    #define JP_MBL_NEXT_POINT       "Next Point"
+    #define JP_MBL_NEXT_POINT       "n. Point"
     #define JP_BLTOUCH              "Bltouch"
     #define JP_BLTOUCH_TEST         "Test"
     #define JP_BLTOUCH_DEPLOY       "Deploy"

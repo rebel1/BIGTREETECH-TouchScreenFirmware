@@ -27,7 +27,7 @@
     #define CZ_ABL                  "Automat"
     #define CZ_MBL                  "MBL"
     #define CZ_MBL_START            "Start MBL"
-    #define CZ_MBL_NEXT_POINT       "Next Point"
+    #define CZ_MBL_NEXT_POINT       "n. Point"
     #define CZ_BLTOUCH              "Bltouch"
     #define CZ_BLTOUCH_TEST         "Test"
     #define CZ_BLTOUCH_DEPLOY       "Vysunout"

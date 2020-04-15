@@ -27,7 +27,7 @@
     #define SK_ABL                  "ABL"
     #define SK_MBL                  "MBL"
     #define SK_MBL_START            "Start MBL"
-    #define SK_MBL_NEXT_POINT       "Next Point"
+    #define SK_MBL_NEXT_POINT       "n. Point"
     #define SK_BLTOUCH              "Bltouch"
     #define SK_BLTOUCH_TEST         "Test"
     #define SK_BLTOUCH_DEPLOY       "Vystrčiť"

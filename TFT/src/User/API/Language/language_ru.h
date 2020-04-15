@@ -27,7 +27,7 @@
     #define RU_ABL                    "ABL"
     #define RU_MBL                    "MBL"
     #define RU_MBL_START              "Start MBL"
-    #define RU_MBL_NEXT_POINT         "Next Point"
+    #define RU_MBL_NEXT_POINT         "n. Point"
     #define RU_BLTOUCH                "Bltouch"
     #define RU_BLTOUCH_TEST           "BLT тест"
     #define RU_BLTOUCH_DEPLOY         "BLT вниз"

@@ -27,7 +27,7 @@
     #define DU_ABL                  "ABL"
     #define DU_MBL                  "MBL"
     #define DU_MBL_START            "Start MBL"
-    #define DU_MBL_NEXT_POINT       "Next Point"
+    #define DU_MBL_NEXT_POINT       "n. Point"
     #define DU_BLTOUCH              "Bltouch"
     #define DU_BLTOUCH_TEST         "Test"
     #define DU_BLTOUCH_DEPLOY       "Gebruiken"

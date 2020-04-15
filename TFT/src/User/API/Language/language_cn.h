@@ -27,7 +27,7 @@
     #define CN_ABL                  "自动调平"
     #define CN_MBL                  "MBL"
     #define CN_MBL_START            "Start MBL"
-    #define CN_MBL_NEXT_POINT       "Next Point"
+    #define CN_MBL_NEXT_POINT       "n. Point"
     #define CN_BLTOUCH              "Bltouch"
     #define CN_BLTOUCH_TEST         "BL自检"
     #define CN_BLTOUCH_DEPLOY       "探针弹出"

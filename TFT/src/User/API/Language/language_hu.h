@@ -27,7 +27,7 @@
     #define HU_ABL                  "ABL"
     #define HU_MBL                  "MBL"
     #define HU_MBL_START            "Start MBL"
-    #define HU_MBL_NEXT_POINT       "Next Point"
+    #define HU_MBL_NEXT_POINT       "n. Point"
     #define HU_BLTOUCH              "Bltouch"
     #define HU_BLTOUCH_TEST         "Teszt"
     #define HU_BLTOUCH_DEPLOY       "Telepítés"

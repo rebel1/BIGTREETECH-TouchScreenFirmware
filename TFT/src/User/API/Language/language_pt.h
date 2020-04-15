@@ -27,7 +27,7 @@
     #define PT_ABL                  "ABL"
     #define PT_MBL                  "MBL"
     #define PT_MBL_START            "Start MBL"
-    #define PT_MBL_NEXT_POINT       "Next Point"
+    #define PT_MBL_NEXT_POINT       "n. Point"
     #define PT_BLTOUCH              "Bltouch"
     #define PT_BLTOUCH_TEST         "Testar"
     #define PT_BLTOUCH_DEPLOY       "Abrir"

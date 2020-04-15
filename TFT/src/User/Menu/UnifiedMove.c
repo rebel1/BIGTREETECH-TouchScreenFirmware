@@ -35,7 +35,7 @@ void menuUnifiedMove(void)
 #endif
 
 #ifdef LEVELING_MBL
-  if(infoMachineSettings.autoLevel == 1){
+  if(infoMachineSettings.levelingData == 1){
     UnifiedMoveItems.items[2].icon = ICON_LEVELING;
     UnifiedMoveItems.items[2].label.index = LABEL_MBL;
     UnifiedMoveItems.items[3].icon = ICON_MANUAL_LEVEL;
@@ -77,7 +77,7 @@ void menuUnifiedMove(void)
                       #endif
                       
                       #ifdef LEVELING_MBL
-                      if(infoMachineSettings.autoLevel == 1){
+                      if(infoMachineSettings.levelingData == 1){
                         infoMenu.menu[++infoMenu.cur] = menuMblLeveling;
                       }
                       else{
@@ -99,7 +99,7 @@ void menuUnifiedMove(void)
                       #endif
                       
                       #ifdef LEVELING_MBL
-                      if(infoMachineSettings.autoLevel == 1){
+                      if(infoMachineSettings.levelingData == 1){
                         infoMenu.menu[++infoMenu.cur] = menuManualLeveling;
                       }
                       break;

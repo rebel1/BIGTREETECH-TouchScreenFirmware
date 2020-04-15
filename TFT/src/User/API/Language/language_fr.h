@@ -27,7 +27,7 @@
     #define FR_ABL                  "ABL"
     #define FR_MBL                  "MBL"
     #define FR_MBL_START            "Start MBL"
-    #define FR_MBL_NEXT_POINT       "Next Point"
+    #define FR_MBL_NEXT_POINT       "n. Point"
     #define FR_BLTOUCH              "Bltouch"
     #define FR_BLTOUCH_TEST         "Test"
     #define FR_BLTOUCH_DEPLOY       "Déployer"

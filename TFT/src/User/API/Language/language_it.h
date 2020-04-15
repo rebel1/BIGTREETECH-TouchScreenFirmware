@@ -27,7 +27,7 @@
     #define IT_ABL                  "ABL"
     #define IT_MBL                  "MBL"
     #define IT_MBL_START            "Start MBL"
-    #define IT_MBL_NEXT_POINT       "Next Point"
+    #define IT_MBL_NEXT_POINT       "n. Point"
     #define IT_BLTOUCH              "Bltouch"
     #define IT_BLTOUCH_TEST         "Test"
     #define IT_BLTOUCH_DEPLOY       "Schiera"

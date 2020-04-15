@@ -27,7 +27,7 @@
     #define PL_ABL                  "ABL"
     #define PL_MBL                  "MBL"
     #define PL_MBL_START            "Start MBL"
-    #define PL_MBL_NEXT_POINT       "Next Point"
+    #define PL_MBL_NEXT_POINT       "n. Point"
     #define PL_BLTOUCH              "Bltouch"
     #define PL_BLTOUCH_TEST         "Test"
     #define PL_BLTOUCH_DEPLOY       "Wysuń"

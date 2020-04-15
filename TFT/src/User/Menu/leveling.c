@@ -67,7 +67,9 @@ LABEL_MBL,
   {ICON_INC,                   LABEL_MBL_NEXT_POINT},
   {ICON_Z_INC,                 LABEL_Z_INC},
   {ICON_Z_DEC,                 LABEL_Z_DEC},
-  {ICON_PROBE_OFFSET,          LABEL_Z_OFFSET},
+  //{ICON_PROBE_OFFSET,          LABEL_Z_OFFSET},
+  {ICON_BACKGROUND,            LABEL_BACKGROUND},
+  {ICON_BACKGROUND,            LABEL_BACKGROUND},
   {ICON_EEPROM_SAVE,           LABEL_EEPROM_SAVE},
   {ICON_BACK,                  LABEL_BACK},}
 };
@@ -82,7 +84,6 @@ void menuMblLeveling(void)
     switch(key_num)
     {
       case KEY_ICON_0:
-        storeCmd("G28\n");
         storeCmd("G29 S1\n");
         break;
       case KEY_ICON_1:
@@ -98,10 +99,10 @@ void menuMblLeveling(void)
         storeCmd("G1 Z-0.02\n");
         storeCmd("G90\n");
         break;
-       case KEY_ICON_4:
-        storeCmd("M851\n");
-        infoMenu.menu[++infoMenu.cur] = menuProbeOffset;
-        break;
+       //case KEY_ICON_4:
+        //storeCmd("M851\n");
+        //infoMenu.menu[++infoMenu.cur] = menuProbeOffset;
+        //break;
       case KEY_ICON_6:
         storeCmd("M500\n");
         break;
