@@ -199,6 +199,11 @@
  */
 #define AUTO_SAVE_LOAD_LEVELING_VALUE
 
+//Type of Leveling ABL, Meshbedleveling , Manual
+//#define AUTO_LEVELING_ABL
+#define MB_LEVELING
+//#define MANUAL_LEVELING
+
 /**
  * Manual Leveling
  * Move to four corner points to Leveling manually (Point 1, Point 2, Point 3, Point 4)
