@@ -164,14 +164,14 @@
 #define AXIS_DISPLAY_ID  {"X",  "Y",  "Z",   "E",  "E2"}
 
 // Default move speed mm/min
-#define DEFAULT_SPEED_MOVE      3000
+#define DEFAULT_SPEED_MOVE      2000
 #define SPEED_MOVE_SLOW         1000
-#define SPEED_MOVE_FAST         5000
+#define SPEED_MOVE_FAST         2500
 
 // Extrude speed mm/min
 #define EXTRUDE_SLOW_SPEED      60
-#define EXTRUDE_NORMAL_SPEED    600
-#define EXTRUDE_FAST_SPEED      1200
+#define EXTRUDE_NORMAL_SPEED    300
+#define EXTRUDE_FAST_SPEED      600
 
 // Size of machine
 #define X_MIN_POS 0
