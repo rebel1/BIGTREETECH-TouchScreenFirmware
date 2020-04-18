@@ -25,8 +25,8 @@
  *
  * Default value is: 1 for LED_OFF
 */
-//#define STARTUP_KNOB_LED_COLOR 1         // LED_OFF
-//#define KEEP_KNOB_LED_COLOR_MARLIN_MODE  // Keeps the LED state in Marlin Mode
+#define STARTUP_KNOB_LED_COLOR 1         // LED_OFF
+#define KEEP_KNOB_LED_COLOR_MARLIN_MODE  // Keeps the LED state in Marlin Mode
 
 /**
  * Default LCD Brightness and LCD IDLE Brightness
@@ -164,14 +164,14 @@
 #define AXIS_DISPLAY_ID  {"X",  "Y",  "Z",   "E",  "E2"}
 
 // Default move speed mm/min
-#define DEFAULT_SPEED_MOVE      2000
+#define DEFAULT_SPEED_MOVE      3000
 #define SPEED_MOVE_SLOW         1000
-#define SPEED_MOVE_FAST         3000
+#define SPEED_MOVE_FAST         5000
 
 // Extrude speed mm/min
 #define EXTRUDE_SLOW_SPEED      60
-#define EXTRUDE_NORMAL_SPEED    500
-#define EXTRUDE_FAST_SPEED      800
+#define EXTRUDE_NORMAL_SPEED    600
+#define EXTRUDE_FAST_SPEED      1200
 
 // Size of machine
 #define X_MIN_POS 0
@@ -201,8 +201,8 @@
 
 //Type of Leveling ABL, Meshbedleveling , Manual
 //#define AUTO_LEVELING_ABL
-//#define LEVELING_MBL
-#define MANUAL_LEVELING
+#define LEVELING_MBL
+//#define MANUAL_LEVELING
 
 /**
  * Manual Leveling
@@ -226,8 +226,8 @@
 #define PS_ON_ACTIVE_HIGH    true   // Set 'false' for ATX (1), 'true' for X-Box (2)
 
 // Filament runout detection
-#define FIL_RUNOUT_INVERTING false  // Set to false to invert the logic of the sensor.
-#define FIL_NOISE_THRESHOLD  500   // 100ms,  Pause print when filament runout is detected for 100ms.
+#define FIL_RUNOUT_INVERTING true  // Set to false to invert the logic of the sensor.
+#define FIL_NOISE_THRESHOLD  100   // 100ms,  Pause print when filament runout is detected for 100ms.
 
 // Smart filament runout detection
 // For use with an encoder disc that toggles runout pin as filament moves
@@ -246,7 +246,7 @@
  * The TFT will auto configure M27 AutoReport with M115 command
  * Set the time interval to poll SD Printing status if Marlin reports M27 disabled.
  */
-//#define ONBOARD_SD_SUPPORT
+#define ONBOARD_SD_SUPPORT
 #ifdef ONBOARD_SD_SUPPORT
   #define M27_REFRESH                3        // Time in sec for M27 command
   #define M27_WATCH_OTHER_SOURCES    true     // if true the polling on M27 report is always active. Case: SD print started not from TFT35

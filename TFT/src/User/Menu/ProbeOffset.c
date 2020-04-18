@@ -116,6 +116,7 @@ void menuProbeOffset(void)
             probe_offset_value += elementsUnit.ele[elementsUnit.cur]*encoderPosition;
             encoderPosition = 0;
           }
+          LCD_LoopEncoder();
         #endif
         break;
       }

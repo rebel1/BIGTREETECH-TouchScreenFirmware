@@ -154,22 +154,19 @@ void menuST7920(void)
       SPISlave.rIndex = (SPISlave.rIndex + 1) % SPI_SLAVE_MAX;
     }
 
+    Touch_Sw(LCD_ReadTouch());
+
+    if(LCD_BtnTouch(LCD_BUTTON_INTERVALS))
+			Touch_Sw(1);
+
     #if LCD_ENCODER_SUPPORT
-      sendEncoder(LCD_ReadTouch());
-
-      if(LCD_BtnTouch(LCD_BUTTON_INTERVALS))
-        sendEncoder(1);
-      loopCheckEncoder();
+      loopCheckMode();
+      LCD_loopCheckEncoder();
     #endif
-
-    loopCheckMode();
-
     #ifdef CLEAN_MODE_SWITCHING_SUPPORT
       loopBackEnd();
     #endif
   }
   SPI_SlaveDeInit();
 }
-
-
 #endif
