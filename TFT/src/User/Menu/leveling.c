@@ -84,6 +84,7 @@ void menuMblLeveling(void)
     switch(key_num)
     {
       case KEY_ICON_0:
+        storeCmd("G29 S4 Z-%.3f\n", LEVELING_POINT_Z_MBL);
         storeCmd("G29 S1\n");
         break;
       case KEY_ICON_1:
@@ -104,7 +105,7 @@ void menuMblLeveling(void)
         //infoMenu.menu[++infoMenu.cur] = menuProbeOffset;
         //break;
       case KEY_ICON_6:
-        storeCmd("G29 S4-0.20\n");
+        storeCmd("G29 S4 Z-%.3f\n", LEVELING_POINT_Z_MBL);
         storeCmd("M500\n");
         break;
       case KEY_ICON_7:
@@ -143,8 +144,7 @@ void moveToLevelingPoint(u8 point)
   }
   
   if(infoMachineSettings.levelingData == 1)
-  {
-    #define  LEVELING_POINT_Z_MBL 0.0f                 
+  {                   
     storeCmd("G0 Z%.3f F%d\n", LEVELING_POINT_MOVE_Z, LEVELING_POINT_Z_FEEDRATE);
     storeCmd("G0 X%d Y%d F%d\n", pointPosition[point][0], pointPosition[point][1], LEVELING_POINT_XY_FEEDRATE);
     storeCmd("G0 Z%.3f F%d\n", LEVELING_POINT_Z_MBL, LEVELING_POINT_Z_FEEDRATE);
