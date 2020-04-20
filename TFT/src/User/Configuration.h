@@ -201,8 +201,8 @@
 
 //Type of Leveling ABL, Meshbedleveling , Manual
 //#define AUTO_LEVELING_ABL
-//#define LEVELING_MBL
-#define MANUAL_LEVELING
+#define LEVELING_MBL
+//#define MANUAL_LEVELING
 
 /**
  * Manual Leveling
