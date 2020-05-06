@@ -143,7 +143,7 @@
 #define FAN_NUM      1    // set in 1~6
 
 //                       PLA      PETG       ABS
-#define PREHEAT_BED      {55,      75,       100}
+#define PREHEAT_BED      {55,      80,       100}
 #define PREHEAT_HOTEND   {200,     230,      230}
 
 #define HEAT_MAX_TEMP    {150,    275,       275,       275,       275,       275,       275}    //max temperature can be set
