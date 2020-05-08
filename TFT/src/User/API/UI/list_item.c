@@ -7,8 +7,6 @@
 
 char * dynamic_label[LISTITEM_PER_PAGE];
 
-char * dynamic_text_value[LISTITEM_PER_PAGE];
-
 float dynamic_value[LISTITEM_PER_PAGE];
 
 const uint16_t ICON_COLOR[ICONCHAR_NUM]=
@@ -250,17 +248,7 @@ char * getDynamicLabel(uint8_t i){
   return dynamic_label[i];
 }
 
-// save dynamic text value (upto 7 characters) ( i : index of the text value position, txt: char * to the text value)
-void setDynamicTextValue(uint8_t i, char *txt){
-  dynamic_text_value[i] = txt;
-}
-
-// get dynamic text value ( i : index of the text value position)
-char * getDynamicTextValue(uint8_t i){
-  return dynamic_text_value[i];
-}
-
-// save dynamic value (upto 7 digits) ( i : index of the value position, value:float value)
+// save dynamic value ( i : index of the value position, value:float value)
 void setDynamicValue(uint8_t i,float value){
 dynamic_value[i] = value;
 }
@@ -355,10 +343,10 @@ void DrawListItemPress(const GUI_RECT * rect, bool pressed){
       }
       else
       {
-        GUI_SetColor(lcd_colors[infoSettings.bg_color]);
+        GUI_SetColor(BACKGROUND_COLOR);
         GUI_DrawPrect(rect);
 
-        GUI_SetColor(lcd_colors[infoSettings.list_border_color]);
+        GUI_SetColor(LISTBTN_BKCOLOR);
         GUI_DrawLine(rect->x0, rect->y0-1 , rect->x1-1, rect->y0-1 );
         GUI_DrawLine(rect->x0, rect->y1-1 , rect->x1-1, rect->y1-1 );
       }
@@ -370,16 +358,14 @@ void ListItem_Display(const GUI_RECT* rect, uint8_t position, const LISTITEM * c
   //draw navigation icons
   if(position >= LISTITEM_PER_PAGE){
     if(curitem->icon != ICONCHAR_BACKGROUND){
-      DrawCharIcon(rect,MIDDLE,curitem->icon,lcd_colors[infoSettings.list_button_color]);
+      DrawCharIcon(rect,MIDDLE,curitem->icon,LISTBTN_BKCOLOR);
       if (pressed != false){
-        GUI_SetColor(WHITE);
         GUI_DrawPrect(rect);
       }
     }
     else{
       GUI_ClearPrect(rect);
     }
-      GUI_RestoreColorDefault();
   }
   //draw list tiems
   else if (curitem->icon != ICONCHAR_BACKGROUND){
@@ -390,7 +376,7 @@ void ListItem_Display(const GUI_RECT* rect, uint8_t position, const LISTITEM * c
     {
     case LIST_LABEL:
       if(curitem->icon != ICONCHAR_BLANK) {
-        DrawCharIcon(rect,LEFT_CENTER,curitem->icon, lcd_colors[infoSettings.bg_color]);
+        DrawCharIcon(rect,LEFT_CENTER,curitem->icon, BACKGROUND_COLOR);
         pos.x += (BYTE_HEIGHT + 1);
        }
       textarea_width = LISTITEM_WIDTH - (pos.x + 1); //width after removing the width for icon
@@ -416,7 +402,7 @@ void ListItem_Display(const GUI_RECT* rect, uint8_t position, const LISTITEM * c
       GUI_ClearPrect(rect);
 
       if(curitem->icon != ICONCHAR_BLANK) {
-        DrawCharIcon(rect,LEFT_CENTER,curitem->icon,lcd_colors[infoSettings.bg_color]);
+        DrawCharIcon(rect,LEFT_CENTER,curitem->icon,BLACK);
         pos.x += (BYTE_HEIGHT + 1);
        }
       textarea_width = LISTITEM_WIDTH - (pos.x + BYTE_HEIGHT + 2);  //width after removing the width for icon
@@ -432,7 +418,7 @@ void ListItem_Display(const GUI_RECT* rect, uint8_t position, const LISTITEM * c
 
     case LIST_CUSTOMVALUE:
       if(curitem->icon != ICONCHAR_BLANK) {
-        DrawCharIcon(rect,LEFT_CENTER,curitem->icon,lcd_colors[infoSettings.bg_color]);
+        DrawCharIcon(rect,LEFT_CENTER,curitem->icon,BLACK);
         pos.x += (BYTE_HEIGHT + 3);
       }
       GUI_ClearRect(pos.x, rect->y0, rect->x1 - BYTE_WIDTH*8 -1, rect->y1);        // clear only text area
@@ -479,7 +465,7 @@ void ListItem_DisplayToggle(uint16_t sx, uint16_t sy, uint8_t iconchar_state)
 
   //GUI_ClearPrect(&rect_item);
   GUI_SetTextMode(GUI_TEXTMODE_NORMAL);
-  GUI_SetColor(lcd_colors[infoSettings.list_border_color]);
+  GUI_SetColor(LISTBTN_BKCOLOR);
   GUI_DispString(sx, sy, (uint8_t*)GET_ICONCHAR[ICONCHAR_TOGGLE_BODY]);
   GUI_SetTextMode(GUI_TEXTMODE_TRANS);
 
@@ -507,7 +493,7 @@ void ListItem_DisplayCustomValue(const GUI_RECT* rect,LABEL value,int i)
   GUI_ClearPrect(&rectVal);
   GUI_SetTextMode(GUI_TEXTMODE_NORMAL);
 
-  GUI_SetColor(lcd_colors[infoSettings.bg_color]);
+  GUI_SetColor(LISTBTN_BKCOLOR);
 
   GUI_DrawPrect(&rectVal);
   GUI_SetTextMode(GUI_TEXTMODE_TRANS);
@@ -515,25 +501,17 @@ void ListItem_DisplayCustomValue(const GUI_RECT* rect,LABEL value,int i)
 
   char tempstr[10];
 
-  if (value.index == LABEL_CUSTOM_VALUE) //show custom numeric value
-  {
-    if (dynamic_value[i] < 1000.0f)
-    {
-      my_sprintf(tempstr, "%.2f", dynamic_value[i]);
+  if(value.index == LABEL_DYNAMIC){
+    if (dynamic_value[i] < 1000.0f){
+      my_sprintf(tempstr, "%.2f",dynamic_value[i]);
     }
-    else
-    {
-      my_sprintf(tempstr, "%.1f", dynamic_value[i]);
+    else{
+      my_sprintf(tempstr, "%.1f",dynamic_value[i]);
     }
-    GUI_DispStringInPrect(&rectVal, (u8 *)tempstr);
+      GUI_DispStringInPrect(&rectVal,(u8*)tempstr);
   }
-  else if (value.index == LABEL_DYNAMIC) //show custom text value
-  {
-    GUI_DispStringInPrect(&rectVal, (u8 *)getDynamicTextValue(i));
-  }
-  else //show regular text labels
-  {
-    GUI_DispStringInPrect(&rectVal, textSelect(value.index));
+  else{
+    GUI_DispStringInPrect(&rectVal,textSelect(value.index));
   }
 
   GUI_RestoreColorDefault();
