@@ -83,7 +83,11 @@ const ITEM itemIsPause[2] = {
 static PRINTING infoPrinting;
 static u32     update_time = M27_REFRESH * 1000;
 
+#ifdef ONBOARD_SD_SUPPORT
+static bool    update_waiting = M27_WATCH_OTHER_SOURCES;
+#else
 static bool    update_waiting = false;
+#endif
 
 //
 bool isPrinting(void)
@@ -705,7 +709,6 @@ void abortPrinting(void)
 
     case TFT_UDISK:
     case TFT_SD:
-      
       clearCmdQueue();
       break;
   }
@@ -713,6 +716,8 @@ if (infoSettings.send_cancel_gcode == 1)
         mustStoreCmd(PRINT_CANCEL_GCODE);
         
   heatClearIsWaiting();
+
+  }
 
   endPrinting();
   exitPrinting();
