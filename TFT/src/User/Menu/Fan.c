@@ -19,10 +19,11 @@ LABEL_FAN,
 
 const char* fanID[] = FAN_ID;
 const char* fanCmd[] = FAN_CMD;
+const u8    fanMaxPWM[] = FAN_MAX_PWM;
 
-static u8   fanSpeed[MAX_TOOL_COUNT] = {0};
+static u8   fanSpeed[FAN_NUM] = {0};
 static u8   curIndex = 0;
-static bool send_waiting[MAX_TOOL_COUNT] = {false};
+static bool send_waiting[FAN_NUM] = {false};
 
 void fanSetSpeed(u8 i, u8 speed)
 {
@@ -36,7 +37,7 @@ u8 fanGetSpeed(u8 i)
 
 void fanSetCurIndex(u8 i)
 {
-  if(i >= infoSettings.fan_count) return;
+  if(i >= FAN_NUM) return;
   curIndex = i;
 }
 
@@ -54,40 +55,37 @@ void showFanSpeed(void)
 {
   const GUI_RECT rect = {exhibitRect.x0, CENTER_Y-BYTE_HEIGHT, exhibitRect.x1, CENTER_Y};
   u8 fs;
-  if(infoSettings.fan_percentage == 1)
+  #ifdef SHOW_FAN_PERCENTAGE
     fs = (fanSpeed[curIndex]*100)/255;
-  else
+  #else
     fs = fanSpeed[curIndex];
-
+  #endif
   GUI_ClearRect(rect.x0, rect.y0, rect.x1, rect.y1);
   GUI_DispStringInPrect(&rect, (u8*)fanID[curIndex]);
-  if(infoSettings.fan_percentage == 1)
-    {
-      char fan_s[5];
-      sprintf(fan_s, "%3d%%", fs);
-      GUI_DispString(CENTER_X-BYTE_WIDTH, CENTER_Y, (u8 *)fan_s);
-    }
-  else
-    {GUI_DispDec(CENTER_X-BYTE_WIDTH, CENTER_Y, fs, 3, LEFT);
-    }
+  #ifdef SHOW_FAN_PERCENTAGE
+    char fan_s[5];
+    sprintf(fan_s, "%3d%%", fs);
+    GUI_DispString(CENTER_X-BYTE_WIDTH, CENTER_Y, (u8 *)fan_s);
+  #else
+    GUI_DispDec(CENTER_X-BYTE_WIDTH, CENTER_Y, fs, 3, LEFT);
+  #endif
 }
 
 void fanSpeedReDraw(void)
 {
- if(infoSettings.fan_percentage == 1)
-    {
-      char fan_s[5] = "";
-      sprintf(fan_s, "%3d%%", (fanSpeed[curIndex]*100)/255);
-      GUI_DispString(CENTER_X-BYTE_WIDTH, CENTER_Y, (u8 *)fan_s);
-    }
-  else
+  #ifdef SHOW_FAN_PERCENTAGE
+    char fan_s[5] = "";
+    sprintf(fan_s, "%3d%%", (fanSpeed[curIndex]*100)/255);
+    GUI_DispString(CENTER_X-BYTE_WIDTH, CENTER_Y, (u8 *)fan_s);
+  #else
     GUI_DispDec(CENTER_X-BYTE_WIDTH, CENTER_Y, fanSpeed[curIndex], 3, LEFT);
+  #endif
 }
 
 void menuFan(void)
 {
   u8 nowIndex = curIndex;
-  u8 nowFanSpeed[infoSettings.fan_count];
+  u8 nowFanSpeed[FAN_NUM];
   memcpy(nowFanSpeed, fanSpeed, sizeof(fanSpeed));
   KEY_VALUES key_num = KEY_IDLE;
 
@@ -104,46 +102,40 @@ void menuFan(void)
     switch(key_num)
     {
       case KEY_ICON_0:
-        if (fanSpeed[curIndex] > 0)
-        {
-          if (infoSettings.fan_percentage ==  1)
-          {
-            if ((fanSpeed[curIndex] - 2) > 0)
-              fanSpeed[curIndex] -= 2; //2.55 is 1 percent, rounding down
-            else
-              fanSpeed[curIndex] = 0;
-          }
-          else
-          {
-            fanSpeed[curIndex]--;
-          }
+        if (fanSpeed[curIndex] > 0) {
+            #ifdef SHOW_FAN_PERCENTAGE
+              if ((fanSpeed[curIndex]-2) > 0) {
+                fanSpeed[curIndex]-=2; //2.55 is 1 percent, rounding down
+              } else {
+                fanSpeed[curIndex]=0;
+              }
+            #else
+              fanSpeed[curIndex]--;
+            #endif
         }
         break;
 
       case KEY_ICON_3:
-        if (fanSpeed[curIndex] < infoSettings.fan_max[curIndex])
-        {
-          if (infoSettings.fan_percentage ==  1)
-          {
-            if (fanSpeed[curIndex] + 2 <= infoSettings.fan_max[curIndex])
-              fanSpeed[curIndex] += 2; //2.55 is 1 percent, rounding down
-            else
-              fanSpeed[curIndex] = infoSettings.fan_max[curIndex];
-          }
-          else
-          {
-            fanSpeed[curIndex]++;
-          }
+        if (fanSpeed[curIndex] < fanMaxPWM[curIndex]){
+            #ifdef SHOW_FAN_PERCENTAGE
+              if (fanSpeed[curIndex]+2 <= fanMaxPWM[curIndex]){
+                fanSpeed[curIndex]+=2; //2.55 is 1 percent, rounding down
+              } else {
+                fanSpeed[curIndex]=fanMaxPWM[curIndex];
+              }
+            #else
+              fanSpeed[curIndex]++;
+            #endif
         }
         break;
 
       case KEY_ICON_4:
-        curIndex = (curIndex + 1) % infoSettings.fan_count;
+        curIndex = (curIndex + 1) % FAN_NUM;
         showFanSpeed();
         break;
 
       case KEY_ICON_5:
-        fanSpeed[curIndex] = infoSettings.fan_max[curIndex];
+        fanSpeed[curIndex] = fanMaxPWM[curIndex];
         break;
 
       case KEY_ICON_6:
@@ -158,33 +150,28 @@ void menuFan(void)
         #if LCD_ENCODER_SUPPORT
           if(encoderPosition)
           {
-            if (fanSpeed[curIndex] < infoSettings.fan_max[curIndex] && encoderPosition > 0)
-            {
-              if (infoSettings.fan_percentage ==  1)
-              {
-                if (fanSpeed[curIndex] + 2 <= infoSettings.fan_max[curIndex])
-                  fanSpeed[curIndex] += 2; //2.55 is 1 percent, rounding down
-                else
-                  fanSpeed[curIndex] = infoSettings.fan_max[curIndex];
-              }
-              else
-              {
+            if (fanSpeed[curIndex] < fanMaxPWM[curIndex] && encoderPosition > 0){
+              #ifdef SHOW_FAN_PERCENTAGE
+                if (fanSpeed[curIndex]+2 <= fanMaxPWM[curIndex]){
+                  fanSpeed[curIndex]+=2; //2.55 is 1 percent, rounding down
+                } else {
+                  fanSpeed[curIndex]=fanMaxPWM[curIndex];
+                }
+              #else
                 fanSpeed[curIndex]++;
-              }
+              #endif
             }
 
             if (fanSpeed[curIndex] > 0 && encoderPosition < 0) {
-              if (infoSettings.fan_percentage ==  1)
-              {
-                if ((fanSpeed[curIndex] - 2) > 0)
-                  fanSpeed[curIndex] -= 2; //2.55 is 1 percent, rounding down
-                else
-                  fanSpeed[curIndex] = 0;
-              }
-              else
-              {
+              #ifdef SHOW_FAN_PERCENTAGE
+                if ((fanSpeed[curIndex]-2) > 0) {
+                  fanSpeed[curIndex]-=2; //2.55 is 1 percent, rounding down
+                } else {
+                  fanSpeed[curIndex]=0;
+                }
+              #else
                 fanSpeed[curIndex]--;
-              }
+              #endif
             }
 
             encoderPosition = 0;

@@ -6,7 +6,6 @@
 #include "Settings.h"
 
 extern bool wasRestored;
-#define PARA_SIZE 512  //bytes
 
 bool readStoredPara(void);
 void storePara(void);

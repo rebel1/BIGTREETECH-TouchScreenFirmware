@@ -35,8 +35,7 @@ enum {
   //keep the following always at the end of this list
   LABEL_NUM,
   LABEL_BACKGROUND,
-  LABEL_DYNAMIC,
-  LABEL_CUSTOM_VALUE,
+  LABEL_DYNAMIC
 };
 
 u8 * textSelect(u8 sel);
