@@ -37,9 +37,6 @@ static int c_fan = 0;
 static int c_speedID = 0;
 static int key_pause = 4;
 const char* Speed_ID[2] = {"Speed","Flow"};
-
-static PRINT_GCODES * printcodes = NULL;
-
 #define LAYER_TITLE "Layer"
 #define EXT_ICON_POS  0
 #define BED_ICON_POS  1
@@ -84,6 +81,7 @@ const ITEM itemIsPause[2] = {
 #endif
 
 static PRINTING infoPrinting;
+static u32     update_time = M27_REFRESH * 1000;
 
 static bool    update_waiting = false;
 
@@ -157,11 +155,11 @@ void printSetUpdateWaiting(bool isWaiting)
 void printerGotoIdle(void)
 {
   // disable all heater
-  for(TOOL i = BED; i < (infoSettings.tool_count+1); i++) {
+  for(TOOL i = BED; i < HEATER_NUM; i++) {
     mustStoreCmd("%s S0\n", heatCmd[i]);
   }
   // disable all fan
-  for(u8 i = 0; i < (infoSettings.fan_count+1); i++) {
+  for(u8 i = 0; i < FAN_NUM; i++) {
     mustStoreCmd("%s S0\n", fanCmd[i]);
   }
   // disable all stepper
@@ -181,12 +179,6 @@ u8 *getCurGcodeName(char *path)
 
 void menuBeforePrinting(void)
 {
-  //load stat/end/cancel gcodes from spi flash
-  printcodes = (PRINT_GCODES*)malloc(sizeof(PRINT_GCODES));
-  uint8_t *data_p = (uint8_t *)printcodes;
-  W25Qxx_ReadBuffer(data_p,CUSTOM_GCODE_ADDR,sizeof(printcodes));
-
-
   long size = 0;
   switch (infoFile.source)
   {
@@ -218,7 +210,7 @@ void menuBeforePrinting(void)
       printSetUpdateWaiting(true);
 
       if (infoMachineSettings.autoReportSDStatus ==1){
-        request_M27(infoSettings.m27_refresh_time*1000);                //Check if there is a SD or USB print running.
+        request_M27(M27_REFRESH);                //Check if there is a SD or USB print running.
       }
       else{
         request_M27(0);
@@ -245,7 +237,7 @@ void menuBeforePrinting(void)
       infoPrinting.size  = f_size(&infoPrinting.file);
       infoPrinting.cur   = infoPrinting.file.fptr;
       if(infoSettings.send_start_gcode == 1 && infoPrinting.cur == 0){ // PLR continue printing, CAN NOT use start gcode
-        mustStoreCmd(printcodes->start_gcode);
+        mustStoreCmd(PRINT_START_GCODE);
       }
       break;
   }
@@ -312,14 +304,14 @@ bool setPrintPause(bool is_pause, bool is_m0pause)
         if (isCoorRelative == true)     mustStoreCmd("G90\n");
         if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
 
-        if (heatGetCurrentTemp(heatGetCurrentToolNozzle()) > infoSettings.min_ext_temp)
+        if (heatGetCurrentTemp(heatGetCurrentToolNozzle()) > PREVENT_COLD_EXTRUSION_MINTEMP)
         {
-          mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] - infoSettings.pause_retract_len, infoSettings.pause_feedrate[E_AXIS]);
+          mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] - NOZZLE_PAUSE_RETRACT_LENGTH, NOZZLE_PAUSE_E_FEEDRATE);
         }
         if (coordinateIsKnown())
         {
-          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS] + infoSettings.pause_z_raise, infoSettings.pause_feedrate[E_AXIS]);
-          mustStoreCmd("G1 X%d Y%d F%d\n", infoSettings.pause_pos[X_AXIS], infoSettings.pause_pos[Y_AXIS], infoSettings.pause_feedrate[X_AXIS]);
+          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS] + NOZZLE_PAUSE_Z_RAISE, NOZZLE_PAUSE_Z_FEEDRATE);
+          mustStoreCmd("G1 X%d Y%d F%d\n", NOZZLE_PAUSE_X_POSITION, NOZZLE_PAUSE_Y_POSITION, NOZZLE_PAUSE_XY_FEEDRATE);
         }
 
         if (isCoorRelative == true)     mustStoreCmd("G91\n");
@@ -338,12 +330,12 @@ bool setPrintPause(bool is_pause, bool is_m0pause)
 
         if (coordinateIsKnown())
         {
-          mustStoreCmd("G1 X%.3f Y%.3f F%d\n", tmp.axis[X_AXIS], tmp.axis[Y_AXIS], infoSettings.pause_feedrate[X_AXIS]);
-          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS], infoSettings.pause_feedrate[Z_AXIS]);
+          mustStoreCmd("G1 X%.3f Y%.3f F%d\n", tmp.axis[X_AXIS], tmp.axis[Y_AXIS], NOZZLE_PAUSE_XY_FEEDRATE);
+          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS], NOZZLE_PAUSE_Z_FEEDRATE);
         }
-        if(heatGetCurrentTemp(heatGetCurrentToolNozzle()) > infoSettings.min_ext_temp)
+        if(heatGetCurrentTemp(heatGetCurrentToolNozzle()) > PREVENT_COLD_EXTRUSION_MINTEMP)
         {
-          mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] - infoSettings.pause_retract_len + infoSettings.resume_purge_len, infoSettings.pause_feedrate[E_AXIS]);
+          mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] - NOZZLE_PAUSE_RETRACT_LENGTH + NOZZLE_RESUME_PURGE_LENGTH, NOZZLE_PAUSE_E_FEEDRATE);
         }
         mustStoreCmd("G92 E%.5f\n", tmp.axis[E_AXIS]);
         mustStoreCmd("G1 F%d\n", tmp.feedrate);
@@ -397,16 +389,13 @@ void reDrawFan(int icon_pos)
 {
   char tempstr[10];
   u8 fs;
-  if (infoSettings.fan_percentage == 1)
-  {
-    fs = (fanGetSpeed(c_fan) * 100) / 255;
+  #ifdef SHOW_FAN_PERCENTAGE
+    fs = (fanGetSpeed(c_fan)*100)/255;
     my_sprintf(tempstr, "%d%%", fs);
-  }
-  else
-  {
+  #else
     fs = fanGetSpeed(c_fan);
     my_sprintf(tempstr, "%d", fs);
-  }
+  #endif
 
   GUI_SetTextMode(GUI_TEXTMODE_TRANS);
 
@@ -487,9 +476,9 @@ void toggleinfo(void)
 {
   if (OS_GetTimeMs() > nextTime)
   {
-    if (infoSettings.tool_count > 1)
+    if (EXTRUDER_NUM > 1)
     {
-      c_Ext = (TOOL)((c_Ext + 1) % (infoSettings.tool_count+1));
+      c_Ext = (TOOL)((c_Ext + 1) % HEATER_NUM);
       if (c_Ext == 0)
       {
         c_Ext += 1;
@@ -498,7 +487,7 @@ void toggleinfo(void)
       reValueNozzle(EXT_ICON_POS);
     }
 
-    if (infoSettings.fan_count > 1)
+    if (FAN_NUM > 1)
     {
       c_fan = (c_fan + 1) % FAN_NUM;
       rapid_serial_loop();	 //perform backend printing loop before drawing to avoid printer idling
@@ -652,7 +641,6 @@ void menuPrinting(void)
         else
         {
           exitPrinting();
-
           infoMenu.cur--;
         }
         break;
@@ -675,7 +663,7 @@ void endPrinting(void)
   switch (infoFile.source)
   {
     case BOARD_SD:
-      printSetUpdateWaiting(infoSettings.m27_active);
+      printSetUpdateWaiting(M27_WATCH_OTHER_SOURCES);
       break;
 
     case TFT_UDISK:
@@ -687,9 +675,8 @@ void endPrinting(void)
   powerFailedClose();
   powerFailedDelete();
   if(infoSettings.send_end_gcode == 1){
-    mustStoreCmd(printcodes->end_gcode);
+    mustStoreCmd(PRINT_END_GCODE);
   }
-  free(printcodes);
   printerGotoIdle();
 }
 
@@ -735,7 +722,7 @@ void menuStopPrinting(void)
 {
   u16 key_num = IDLE_TOUCH;
 
-  popupDrawPage(bottomDoubleBtn, textSelect(LABEL_WARNING), textSelect(LABEL_STOP_PRINT), textSelect(LABEL_CONFIRM), textSelect(LABEL_CANCEL));
+  popupDrawPage(bottomDoubleBtn, textSelect(LABEL_WARNING), textSelect(LABEL_STOP_PRINT), textSelect(LABEL_CONFIRM), textSelect(LABEL_CANNEL));
 
   while(infoMenu.menu[infoMenu.cur] == menuStopPrinting)
   {
@@ -761,9 +748,8 @@ void menuShutDown(void)
 {
   bool tempIsLower;
   u16 key_num = IDLE_TOUCH;
-  char tempstr[75];
-  my_sprintf(tempstr,(char*)textSelect(LABEL_WAIT_TEMP_SHUT_DOWN),infoSettings.auto_off_temp);
-  popupDrawPage(bottomDoubleBtn, textSelect(LABEL_SHUT_DOWN), (u8*)tempstr, textSelect(LABEL_FORCE_SHUT_DOWN), textSelect(LABEL_CANCEL));
+
+  popupDrawPage(bottomDoubleBtn, textSelect(LABEL_SHUT_DOWN), textSelect(LABEL_WAIT_TEMP_SHUT_DOWN), textSelect(LABEL_FORCE_SHUT_DOWN), textSelect(LABEL_CANNEL));
 
   for(u8 i = 0; i < FAN_NUM; i++)
   {
@@ -865,7 +851,7 @@ void getGcodeFromFile(void)
 void loopCheckPrinting(void)
 {
   static u32  nextTime=0;
-  u32 update_time = infoSettings.m27_refresh_time * 1000;
+
   do
   {  /* WAIT FOR M27	*/
     if(update_waiting == true) {nextTime=OS_GetTimeMs()+update_time; break;}
