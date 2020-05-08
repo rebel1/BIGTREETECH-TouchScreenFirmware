@@ -717,8 +717,6 @@ if (infoSettings.send_cancel_gcode == 1)
         
   heatClearIsWaiting();
 
-  }
-
   endPrinting();
   exitPrinting();
 }

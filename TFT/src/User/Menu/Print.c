@@ -370,7 +370,7 @@ LABEL_PRINT,
  #ifdef ONBOARD_SD_SUPPORT
   {ICON_ONBOARD_SD,           LABEL_ONBOARDSD},
  #endif
- #ifdef U_DISK_SUPPROT
+ #ifdef U_DISK_SUPPORT
   {ICON_U_DISK,               LABEL_U_DISK},
  #else
   {ICON_BACKGROUND,           LABEL_BACKGROUND},
@@ -410,7 +410,7 @@ void menuPrint(void)
         goto selectEnd;
       #endif
 
-      #ifdef U_DISK_SUPPROT
+      #ifdef U_DISK_SUPPORT
         #ifdef ONBOARD_SD_SUPPORT
           case KEY_ICON_2:
         #else
