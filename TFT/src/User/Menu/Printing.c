@@ -705,9 +705,7 @@ void abortPrinting(void)
 
     case TFT_UDISK:
     case TFT_SD:
-      if (infoSettings.send_cancel_gcode == 1)
-        mustStoreCmd(PRINT_CANCEL_GCODE);
-
+      
       clearCmdQueue();
       break;
   }
