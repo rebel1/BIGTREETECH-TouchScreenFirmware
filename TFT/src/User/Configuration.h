@@ -1,6 +1,6 @@
 #ifndef _CONFIGRATION_H_
 #define _CONFIGRATION_H_
-
+#define CONFIG_VERSION 200404
 //===========================================================================
 //============================= General Settings ============================
 //===========================================================================
@@ -19,13 +19,13 @@
 /**
  * Default Startup Knob LED Color (TFT35 E3)
  *
- * Options:  1: LED_OFF,     2: LED_WHITE,   3: LED_RED,
- *           4: LED_ORANGE,  5: LED_YELLOW,  6: LED_GREEN,
- *           7: LED_BLUE,    8: LED_INDIGO,  9: LED_VIOLET
+ * Options:  0: LED_OFF,     1: LED_WHITE,   2: LED_RED,
+ *           3: LED_ORANGE,  4: LED_YELLOW,  5: LED_GREEN,
+ *           6: LED_BLUE,    7: LED_INDIGO,  8: LED_VIOLET
  *
  * Default value is: 1 for LED_OFF
 */
-#define STARTUP_KNOB_LED_COLOR 4         // LED_OFF
+#define STARTUP_KNOB_LED_COLOR 0         // LED_OFF
 #define KEEP_KNOB_LED_COLOR_MARLIN_MODE  // Keeps the LED state in Marlin Mode
 
 /**
@@ -44,9 +44,9 @@
  *              6: LCD_DIM_300_SECONDS,  7: LCD_DIM_CUSTOM_SECONDS
  *
  */
-#define DEFAULT_LCD_BRIGHTNESS      10  // 11: LCD_100_PERCENT - Brightness value from list
-#define DEFAULT_LCD_IDLE_BRIGHTNESS 1   // 2: LCD_10_PERCENT - Brightness value from list
-#define DEFAULT_LCD_IDLE_TIMER      3   // 0: LCD_DIM_OFF
+#define DEFAULT_LCD_BRIGHTNESS      10  // 10: LCD_100_PERCENT - Brightness value from list
+#define DEFAULT_LCD_IDLE_BRIGHTNESS 2   // 2: LCD_10_PERCENT - Brightness value from list
+#define DEFAULT_LCD_IDLE_TIMER      0   // 0: LCD_DIM_OFF
 #define LCD_DIM_CUSTOM_SECONDS      600 // Custom value in seconds. Will be used if LCD_DIM_CUSTOM_SECONDS is set as idle timer.
 
 //===========================================================================
@@ -62,21 +62,25 @@
  *          6: MAGENTA,    7: YELLOW,      8: ORANGE,  9: PURPLE,   10: LIME,  11: BROWN,
  *         12: DARKBLUE,  13: DARKGREEN,  14: GRAY,   15: DARKGRAY
  */
-#define ST7920_BKCOLOR BLACK
-#define ST7920_FNCOLOR GREEN
+#define ST7920_BKCOLOR 1
+#define ST7920_FNCOLOR 0
 
 /**
  *  Text displayed at the top of the TFT in Marlin Mode.
  */
-//#define ST7920_BANNER_TEXT "LCD12864 Simulator"
+#define ST7920_BANNER_TEXT "LCD12864 Simulator"
 
+/**
+ *  show banner text at the top of the TFT in Marlin Mode.
+ */
+#define ST7920_SHOW_BANNER true //to enabled: true | to disabled: false
 /**
  * Run Marlin Mode in Fullscreen
  *
  *  Options:  0: Disabled. RECOMMENDED FOR TFT24
  *            1: Enabled Marlin Fullscreen mode.
  */
-#define DEFAULT_ST7920_FULLSCREEN_MODE 1 // 0: Disabled. RECOMMENDED FOR TFT24
+#define DEFAULT_ST7920_FULLSCREEN_MODE 0 // 0: Disabled. RECOMMENDED FOR TFT24
 
 /**
  * Keep Serial always On (ONLY SUPPORTED ON TFT24 V1.1, TFT35 V3.0, AND TFT28 V3.0)
@@ -150,7 +154,8 @@
 #define FAN_NUM      1    // set in 1~6
 
 //                       PLA      PETG       ABS
-#define PREHEAT_BED      {55,      80,       100}
+#define PREHEAT_LABELS    {"PLA",   "PETG",   "ABS"}
+#define PREHEAT_BED      {60,      80,       100}
 #define PREHEAT_HOTEND   {200,     230,      230}
 
 #define HEAT_MAX_TEMP    {150,    275,       275,       275,       275,       275,       275}    //max temperature can be set
@@ -173,24 +178,24 @@
 // Default move speed mm/min
 #define DEFAULT_SPEED_MOVE      2000
 #define SPEED_MOVE_SLOW         1000
-#define SPEED_MOVE_FAST         2500
+#define SPEED_MOVE_FAST         3000
 
 // Extrude speed mm/min
 #define EXTRUDE_SLOW_SPEED      60
-#define EXTRUDE_NORMAL_SPEED    300
-#define EXTRUDE_FAST_SPEED      600
+#define EXTRUDE_NORMAL_SPEED    500
+#define EXTRUDE_FAST_SPEED      800
 
 // Size of machine
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 264
-#define Y_MAX_POS 280
-#define Z_MAX_POS 300
+#define X_MAX_POS 300
+#define Y_MAX_POS 300
+#define Z_MAX_POS 400
 
 // Specify a pause position as { X, Y, Z_raise }
-#define NOZZLE_PAUSE_RETRACT_LENGTH 15   // (mm)
-#define NOZZLE_RESUME_PURGE_LENGTH  16   // (mm)
+#define NOZZLE_PAUSE_RETRACT_LENGTH 3   // (mm)
+#define NOZZLE_RESUME_PURGE_LENGTH  4   // (mm)
 #define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
 #define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10)  // (mm) Must be an integer
 #define NOZZLE_PAUSE_Z_RAISE        20   // (mm)
@@ -204,21 +209,20 @@
  * Enable this will send "M500" after "G29" to store leveling value
  * and send "M420 S1" to enable leveling state after startup
  */
-//#define AUTO_SAVE_LOAD_LEVELING_VALUE
+#define AUTO_SAVE_LOAD_LEVELING_VALUE true //to enabled: true | to disabled: false
+
+//Type of Leveling ABL, Meshbedleveling , Manual
+//#define AUTO_LEVELING_ABL
+//#define LEVELING_MBL
+#define MANUAL_LEVELING
 
 /**
  * Manual Leveling
  * Move to four corner points to Leveling manually (Point 1, Point 2, Point 3, Point 4)
  */
-#define LEVELING_POINT_1_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_1_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_2_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_2_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_3_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_3_Y         (Y_MAX_POS - 20)
-#define LEVELING_POINT_4_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_4_Y         (Y_MAX_POS - 20)
+#define LEVELING_EDGE_DISTANCE     50    // Inset distance from bed's edge for calulating leveling point location.
 #define LEVELING_POINT_Z           0.1f  // Z-axis position when nozzle stays for leveling
+#define LEVELING_POINT_Z_MBL       0.1f  // Z-axis position when nozzle stays for manual leveling when MBL activated
 #define LEVELING_POINT_MOVE_Z      10.0f // Z-axis position when nozzle move to next point
 #define LEVELING_POINT_XY_FEEDRATE 6000  // (mm/min) X and Y axes move feedrate
 #define LEVELING_POINT_Z_FEEDRATE  600   // (mm/min) Z axis move feedrate
@@ -227,8 +231,8 @@
 #define PS_ON_ACTIVE_HIGH    true   // Set 'false' for ATX (1), 'true' for X-Box (2)
 
 // Filament runout detection
-#define FIL_RUNOUT_INVERTING true  // Set to false to invert the logic of the sensor.
-#define FIL_NOISE_THRESHOLD  100   // 100ms,  Pause print when filament runout is detected for 100ms.
+#define FIL_RUNOUT_INVERTING false  // Set to false to invert the logic of the sensor.
+#define FIL_NOISE_THRESHOLD  500   // 100ms,  Pause print when filament runout is detected for 100ms.
 
 // Smart filament runout detection
 // For use with an encoder disc that toggles runout pin as filament moves
@@ -240,18 +244,16 @@
 
 // Enable Unified Move Menu
 // Move, Home, Extrude, ABL at one Place and bring G-code Menu on Home Menu
-#define UNIFIED_MENU
+#define UNIFIED_MENU true //for unified menu: true | for classic menu: false
 
 /**
  * SD support
- * The TFT will auto configure M27 AutoReport with M115 command
- * Set the time interval to poll SD Printing status if Marlin reports M27 disabled.
+ * Starting from Marlin Bugfix 2.0.x Distribution Date: 2020-04-27 & above, The TFT will auto detect
+ * On-Board SD Card and auto-configure M27 AutoReport with M115 command
+ * Set the time interval to poll SD Printing status if Marlin reports M27 AutoReport as disabled.
  */
-//#define ONBOARD_SD_SUPPORT
-#ifdef ONBOARD_SD_SUPPORT
-  #define M27_REFRESH                3        // Time in sec for M27 command
-  #define M27_WATCH_OTHER_SOURCES    true     // if true the polling on M27 report is always active. Case: SD print started not from TFT35
-#endif
+#define M27_REFRESH                3        // Time in sec for M27 command
+#define M27_WATCH_OTHER_SOURCES    true     // if true the polling on M27 report is always active. Case: SD print started not from TFT35
 
 /**
  * Power Loss Recovery
@@ -339,7 +341,7 @@
 #define PRINT_START_GCODE "G28 XY R10\n" // Raise Z 10mm before homing X & Y
 
 // End G-code - run this G-code after finishing print
-#define PRINT_END_GCODE "" //"G90\nG1 E-4\nG92 E0\nM18\n" // Switch to absolute positioning, reduce filament pressure by performing small retract, reset extruder position, disable steppers
+#define PRINT_END_GCODE "G90\nG1 E-4\nG92 E0\nM18\n" // Switch to absolute positioning, reduce filament pressure by performing small retract, reset extruder position, disable steppers
 
 // Cancel G-code - run this G-code after canceling print
 #define PRINT_CANCEL_GCODE "G28 XY R10\n" // Home XY and raise Z 10mm
