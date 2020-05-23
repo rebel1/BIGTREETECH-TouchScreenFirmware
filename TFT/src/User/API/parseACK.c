@@ -226,7 +226,7 @@ void parseACK(void)
         setPrintCur(position);
   //      powerFailedCache(position);
       }
-  #endif
+
     //parse and store stepper steps/mm values
       else if(ack_seen("M92 X"))
       {
@@ -294,7 +294,6 @@ void parseACK(void)
                           setParameter(P_CURRENT, X_STEPPER, ack_value());
         if(ack_seen("Y")) setParameter(P_CURRENT, Y_STEPPER, ack_value());
         if(ack_seen("Z")) setParameter(P_CURRENT, Z_STEPPER, ack_value());
-        if(ack_seen("E")) setParameter(P_CURRENT, E_STEPPER, ack_value());
       }
       else if(ack_seen("M906 I1")){
         if(ack_seen("X")) dualstepper[X_STEPPER] = true;
