@@ -208,14 +208,14 @@
  * Manual Leveling
  * Move to four corner points to Leveling manually (Point 1, Point 2, Point 3, Point 4)
  */
-#define LEVELING_POINT_1_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_1_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_2_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_2_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_3_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_3_Y         (Y_MAX_POS - 20)
-#define LEVELING_POINT_4_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_4_Y         (Y_MAX_POS - 20)
+#define LEVELING_POINT_1_X         (X_MIN_POS + 50)
+#define LEVELING_POINT_1_Y         (Y_MIN_POS + 50)
+#define LEVELING_POINT_2_X         (X_MAX_POS - 50)
+#define LEVELING_POINT_2_Y         (Y_MIN_POS + 50)
+#define LEVELING_POINT_3_X         (X_MAX_POS - 50)
+#define LEVELING_POINT_3_Y         (Y_MAX_POS - 50)
+#define LEVELING_POINT_4_X         (X_MIN_POS + 50)
+#define LEVELING_POINT_4_Y         (Y_MAX_POS - 50)
 #define LEVELING_POINT_Z           0.1f  // Z-axis position when nozzle stays for leveling
 #define LEVELING_POINT_Z_MBL       0.1f
 #define LEVELING_POINT_MOVE_Z      10.0f // Z-axis position when nozzle move to next point
