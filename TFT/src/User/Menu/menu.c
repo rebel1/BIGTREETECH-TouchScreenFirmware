@@ -420,7 +420,6 @@ if(infoMachineSettings.onboard_sd_support == ENABLED && infoMachineSettings.auto
   {
     loopCheckPrinting(); //Check if there is a SD or USB print running.
   }
-#endif
 
 #ifdef U_DISK_SUPPORT
   USBH_Process(&USB_OTG_Core, &USB_Host);

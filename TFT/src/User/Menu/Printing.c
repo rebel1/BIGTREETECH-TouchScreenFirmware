@@ -84,11 +84,7 @@ const ITEM itemIsPause[2] = {
 
 static PRINTING infoPrinting;
 
-#ifdef ONBOARD_SD_SUPPORT
-static bool    update_waiting = M27_WATCH_OTHER_SOURCES;
-#else
 static bool    update_waiting = false;
-#endif
 
 //
 bool isPrinting(void)
