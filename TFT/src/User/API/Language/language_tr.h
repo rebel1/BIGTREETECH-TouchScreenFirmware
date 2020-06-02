@@ -183,5 +183,8 @@
     #define TR_300_SECONDS              "5 Dak."
     #define TR_CUSTOM_SECONDS           "Kişisel"
     #define TR_ST7920_FULLSCREEN        "Tam ekran Marlin modu."
+    #define TR_MBL                  "MBL"
+    #define TR_MBL_START            "Start MBL"
+    #define TR_MBL_NEXT_POINT       "n. Point"
 
 #endif
