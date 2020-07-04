@@ -176,12 +176,13 @@ void menuPowerOff(void)
 {
   u16 key_num = IDLE_TOUCH;
   clearPowerFailed();
-  GUI_Clear(lcd_colors[infoSettings.bg_color]);
+  GUI_Clear(infoSettings.bg_color);
   GUI_DispString((LCD_WIDTH - GUI_StrPixelWidth(textSelect(LABEL_LOADING)))/2, LCD_HEIGHT/2 - BYTE_HEIGHT, textSelect(LABEL_LOADING));
 
   if(mountFS()==true && powerFailedExist())
   {
-    popupDrawPage(bottomDoubleBtn, textSelect(LABEL_POWER_FAILED), (u8* )infoFile.title, textSelect(LABEL_CONFIRM), textSelect(LABEL_CANCEL));
+    popupDrawPage(DIALOG_TYPE_ERROR, bottomDoubleBtn, textSelect(LABEL_POWER_FAILED), (u8* )infoFile.title,
+                    textSelect(LABEL_CONFIRM), textSelect(LABEL_CANCEL));
 
     while(infoMenu.menu[infoMenu.cur]==menuPowerOff)
     {

@@ -17,7 +17,6 @@
     #define RU_SHUT_DOWN              "Выключить"
     #define RU_RGB_SETTINGS           "Цвет LED"
     #define RU_RGB_OFF                "LED выкл"
-    #define RU_GCODE                  "G-коды"
     #define RU_TERMINAL               "Терминал"
     #define RU_CUSTOM                 "Своё меню"
     #define RU_LEVELING               "Равнение"
@@ -26,7 +25,6 @@
     #define RU_POINT_3                "Точка 3"
     #define RU_POINT_4                "Точка 4"
     #define RU_ABL                    "ABL"
-    #define RU_BLTOUCH                "Bltouch"
     #define RU_BLTOUCH_TEST           "BLT тест"
     #define RU_BLTOUCH_DEPLOY         "BLT вниз"
     #define RU_BLTOUCH_STOW           "BLT вверх"
@@ -34,6 +32,7 @@
     #define RU_Z_OFFSET               "Отступ Z"
     #define RU_PROBE_OFFSET           "Смещение датчика"
     #define RU_EEPROM_SAVE            "Сохранить"
+    #define RU_APPLY                  "Apply"
     #define RU_INC                    "Увеличить"
     #define RU_DEC                    "Уменьшить"
     #define RU_NOZZLE                 "Сопло"
@@ -56,6 +55,8 @@
     #define RU_MORE                   "Больше\u089C"  //Curved Right Arrow
     #define RU_SCREEN_INFO            "Инфо"
     #define RU_STATUS                 "Status"
+    #define RU_SIMULATOR_BG_COLOR     "Marlin simulator background color"
+    #define RU_SIMULATOR_FONT_COLOR   "Marlin simulator font color"
     #define RU_WHITE                  "Белый"
     #define RU_BLACK                  "Чёрный"
     #define RU_BLUE                   "Синий"
@@ -75,6 +76,7 @@
     #define RU_DARKGREEN              "Тёмно-зелёный"
     #define RU_DARKGRAY               "Тёмно-серый"
     #define RU_DISCONNECT             "Отключить"
+    #define RU_BAUDRATE               "BaudRate"
     #define RU_PERCENTAGE             "Подстройки"
     #define RU_BABYSTEP               "Микрошаг Z"
     #define RU_PERCENTAGE_SPEED       "Скорость"
@@ -106,14 +108,14 @@
     #define RU_UNCONNECTED            "Нет подключения!"
     #define RU_DISCONNECT_INFO        "Управление принтером через компьютер"
     #define RU_LOADING                "Загрузка..."
-    #define RU_POWER_FAILED           "\u0887 Продолжить печать?" //Question Sign
+    #define RU_POWER_FAILED           "Продолжить печать?" //Question Sign
     #define RU_CONTINUE               "Продолжение"
     #define RU_CANCEL                 "\u088F Отмена" //Cancel Sign
     #define RU_ADJUST_TITLE           "Калибровка экрана"
     #define RU_ADJUST_INFO            "Нажмите на красную точку"
     #define RU_ADJUST_OK              "Успешная калибровка"
     #define RU_ADJUST_FAILED          "Неудачная калибровка, попробуйте снова"
-    #define RU_WARNING                "\u0881 Внимание" //Exclamation Sign
+    #define RU_WARNING                "Внимание" //Exclamation Sign
     #define RU_STOP_PRINT             "Остановить печать?"
     #define RU_CONFIRM                "\u088E OK" //Confirm Sign
     #define RU_TFTSD                  "SD экрана"
@@ -136,8 +138,8 @@
     #define RU_UNIFIEDHEAT            "Нагрев"
     #define RU_COOLDOWN               "Охладить"
     #define RU_EMERGENCYSTOP          "Экст.стоп"
-    #define RU_MAINMENU               "Меню"
     #define RU_TOUCH_TO_EXIT          "Нажмите для возврата"
+    #define RU_MAINMENU               "Меню"
     #define RU_WAIT_TEMP_SHUT_DOWN    "Дождитесь температуры\nсопла не ниже чем %d℃" // Wait for the temperature of hotend to be lower than 50℃
     #define RU_FORCE_SHUT_DOWN        "Принудительно выкл"
     #define RU_SHUTTING_DOWN          "Выключаю..."
@@ -166,8 +168,11 @@
     #define RU_RETRACT_ACCELERATION   "Ретракта (втягивания)"
     #define RU_TRAVEL_ACCELERATION    "Перемещения"
     #define RU_BUMP_SENSITIVITY       "TMC чувствительность удара"
+    #define RU_FWRETRACT              "FW Retraction"
+    #define RU_FWRECOVER              "FW Retraction Recover"
+    #define RU_LIN_ADVANCE            "Linear Advance"
     #define RU_RESET                  "Сброс"
-    #define RU_RESET_SETTINGS         "Все настройки экрана\nбудут сброшены по\nумолчанию. Продолжить?"
+    #define RU_RESET_SETTINGS_INFO    "Все настройки будут\nсброшены по умолчанию.\nПродолжить?"
     #define RU_RESET_SETTINGS_DONE    "Успешный сброс настроек\nэкрана. Для полного\nвступления в силу,\nперегрузите устройство."
     #define RU_INFO                   "\u0884 Информация" //Info Sign
     #define RU_LCD_BRIGHTNESS         "Яркость LCD"
@@ -181,5 +186,18 @@
     #define RU_300_SECONDS            "5 мин."
     #define RU_CUSTOM_SECONDS         "Своё"
     #define RU_ST7920_FULLSCREEN      "Marlin на весь экран"
+    #define RU_SETTING_RESET          "Reset settings"
+    #define RU_SETTING_RESTORE        "Restore settings"
+    #define RU_EEPROM_SAVE_INFO       "Save printer settings\nto EEPROM?"
+    #define RU_EEPROM_RESTORE_INFO    "Reload settings from\nEEPROM?"
+    #define RU_RETRACT_FEEDRATE       "Retract feedrate"
+    #define RU_RETRACT_LENGTH         "Retract length"
+    #define RU_RETRACT_SWAP_LENGTH    "Retract swap length"
+    #define RU_RETRACT_Z_LIFT         "Z lift on retraction"
+    #define RU_RECOVER_FEEDRATE       "Recover feedrate"
+    #define RU_SWAP_RECOVER_FEEDRATE  "Swap recover feedrate"
+    #define RU_RECOVER_LENGTH         "Extra recover length"
+    #define RU_SWAP_RECOVER_LENGTH    "Extra recover swap length"
+    #define RU_START_PRINT            "Start Printing:\n %s?"
 
 #endif
