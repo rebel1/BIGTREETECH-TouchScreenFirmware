@@ -199,5 +199,8 @@
     #define GR_RECOVER_LENGTH         "Extra recover length"
     #define GR_SWAP_RECOVER_LENGTH    "Extra recover swap length"
     #define GR_START_PRINT            "Start Printing:\n %s?"
+    #define GR_MBL                    "MBL"
+    #define GR_MBL_START              "Start MBL"
+    #define GR_MBL_NEXT_POINT         "n. Point"
 
 #endif

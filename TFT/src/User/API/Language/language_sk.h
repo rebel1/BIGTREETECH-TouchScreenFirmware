@@ -201,6 +201,7 @@
     #define SK_START_PRINT            "Start Printing:\n %s?"
     #define SK_ABL                  "ABL"
     #define SK_MBL                  "MBL"
-    #define SK_MBL_START            "Start MBL
+    #define SK_MBL_START            "Start MBL"
+    #define SK_MBL_NEXT_POINT         "n. Point"
 
 #endif
