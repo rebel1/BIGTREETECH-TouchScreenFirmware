@@ -199,5 +199,7 @@
     #define SL_RECOVER_LENGTH         "Extra recover length"
     #define SL_SWAP_RECOVER_LENGTH    "Extra recover swap length"
     #define SL_START_PRINT            "Start tiska:\n %s?"
-
+    #define SL_MBL                    "MBL"
+    #define SL_MBL_START              "Start MBL"
+    #define SL_MBL_NEXT_POINT         "n. Point"
 #endif
