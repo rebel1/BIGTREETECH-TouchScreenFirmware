@@ -1,10 +1,34 @@
 #include "UnifiedMove.h"
 #include "includes.h"
 
+static u32 nextTime = 0;
+static u32 update_time = 1000; // 1 seconds is 1000
+
+void updateABL(MENUITEMS *menu)
+{
+  if (OS_GetTimeMs() > nextTime)
+  {
+    nextTime = OS_GetTimeMs() + update_time;
+
+    //menuDrawPage(menu);
+    menuDrawItem(&menu->items[6], 6);
+
+    if(infoMachineSettings.autoLevel == 1) {
+      if(infoSettings.autoLevelState == 1) {
+      menu->items[6].icon = ICON_LEVELING_ON;
+      menu->items[6].label.index = LABEL_ABL_ENABLE;
+      }
+      else {
+        menu->items[6].icon = ICON_LEVELING_OFF;
+        menu->items[6].label.index = LABEL_ABL_DISABLE;
+      }
+    }
+  }
+}
 
 void menuUnifiedMove(void)
 {
-    //1 title, ITEM_PER_PAGE items(icon + label)
+  //1 title, ITEM_PER_PAGE items(icon + label)
   MENUITEMS UnifiedMoveItems = {
   // title
   LABEL_UNIFIEDMOVE,
@@ -25,6 +49,15 @@ void menuUnifiedMove(void)
     UnifiedMoveItems.items[2].label.index = LABEL_ABL;
     UnifiedMoveItems.items[3].icon = ICON_MANUAL_LEVEL;
     UnifiedMoveItems.items[3].label.index = LABEL_LEVELING;
+
+    if(infoSettings.autoLevelState == 1) {
+      UnifiedMoveItems.items[6].icon = ICON_LEVELING_ON;
+      UnifiedMoveItems.items[6].label.index = LABEL_ABL_ENABLE;
+    }
+    else {
+      UnifiedMoveItems.items[6].icon = ICON_LEVELING_OFF;
+      UnifiedMoveItems.items[6].label.index = LABEL_ABL_DISABLE;
+    }
   }
   else{
     UnifiedMoveItems.items[2].icon = ICON_MANUAL_LEVEL;
@@ -68,7 +101,12 @@ void menuUnifiedMove(void)
       case KEY_ICON_2:
                       #ifdef AUTO_LEVELING_ABL
                       if(infoMachineSettings.autoLevel == 1){
-                        infoMenu.menu[++infoMenu.cur] = menuAutoLeveling;
+                        if (infoMachineSettings.enableubl == 1) {
+                          infoMenu.menu[++infoMenu.cur] = menuAutoLevelingUBL;
+                        }
+                        else {
+                          infoMenu.menu[++infoMenu.cur] = menuAutoLeveling;
+                        }
                       }
                       else{
                         infoMenu.menu[++infoMenu.cur] = menuManualLeveling;
@@ -105,9 +143,20 @@ void menuUnifiedMove(void)
                       break;
                       #endif
                       break;
+      case KEY_ICON_6:
+                      if(infoMachineSettings.autoLevel == 1){
+                        if(infoSettings.autoLevelState == 1){
+                          storeCmd("M420 S0\n");
+                        }
+                        else {
+                          storeCmd("M420 S1\n");
+                        }
+                      }
+                      break;
       case KEY_ICON_7: infoMenu.cur--; break;
       default: break;
     }
+    updateABL(&UnifiedMoveItems);
     loopProcess();
   }
 }
