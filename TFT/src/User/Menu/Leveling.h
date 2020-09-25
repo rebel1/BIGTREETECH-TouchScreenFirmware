@@ -6,8 +6,6 @@ extern "C" {
 #endif
 
 void menuManualLeveling(void);
-void menuAutoLeveling(void);
-void menuMblLeveling(void);
 
 #ifdef __cplusplus
 }
