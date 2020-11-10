@@ -189,6 +189,12 @@ void hostActionCommands(void)
 {
   char *find = strchr(dmaL2Cache + ack_index, '\n');
   *find = '\0';
+  if(ack_seen("notification "))
+  {
+    strcpy(hostAction.prompt_begin, dmaL2Cache + ack_index);
+    statusScreen_setMsg((u8 *)echomagic, (u8 *)dmaL2Cache + ack_index);
+  }
+  
   if(ack_seen("prompt_begin "))
   {
     hostAction.button = 0;
@@ -473,6 +479,12 @@ void parseACK(void)
         if(ack_seen("E")) setParameter(P_JERK, E_STEPPER, ack_value());
         if(ack_seen("J")) setParameter(P_JUNCTION_DEVIATION, 0, ack_value());
       }
+    //parse and store Home Offset values
+      else if(ack_seen("M206 X")){
+                          setParameter(P_HOME_OFFSET, X_STEPPER, ack_value());
+        if(ack_seen("Y")) setParameter(P_HOME_OFFSET, Y_STEPPER, ack_value());
+        if(ack_seen("Z")) setParameter(P_HOME_OFFSET, Z_STEPPER, ack_value());
+      }
     //parse and store FW retraction values
       else if(ack_seen("M207 S")){
                           setParameter(P_FWRETRACT, 0, ack_value());
@@ -743,6 +755,17 @@ void parseACK(void)
           fanSetSpeed(i, ack_value());
           fanSpeedQuerySetWait(false);
         }
+      }
+      else if(ack_seen("Case light: OFF"))
+      {
+        caseLightSetState(false);
+        caseLightQuerySetWait(false);
+      }
+      else if(ack_seen("Case light: "))
+      {
+        caseLightSetState(true);
+        caseLightSetBrightness(ack_value());
+        caseLightQuerySetWait(false);
       }
     // Parse pause message
       else if(!infoMachineSettings.promptSupport && ack_seen("paused for user"))
