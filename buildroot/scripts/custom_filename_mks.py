@@ -1,9 +1,15 @@
 Import("env")
+import shutil
 
-build_flags = env.ParseFlags(env['BUILD_FLAGS'])
-#print build_flags.get("CPPDEFINES")
-flags = {k: v for (k, v) in build_flags.get("CPPDEFINES")}
-#print flags
-filename = flags.get("HARDWARE") + "." + flags.get("SOFTWARE_VERSION")
-#print filename
-env.Replace(PROGNAME="mkstft28")
+def make_mks_file(source, target, env):
+    print("Generating firmware with MKS file name...")
+    buildDir = env.subst('$BUILD_DIR')
+    build_flags = env.ParseFlags(env['BUILD_FLAGS'])
+    flags = {k: v for (k, v) in build_flags.get("CPPDEFINES")}
+    filename = flags.get("HARDWARE") + "." + flags.get("SOFTWARE_VERSION")
+    filename_short = flags.get("HARDWARE_SHORT") + flags.get("SOFTWARE_VERSION_SHORT")
+    # do some actions
+    shutil.copyfile(buildDir+"/"+filename+".bin", buildDir+"/""mkstft28"+".bin")
+    print("Done.")
+
+env.AddPostAction("buildprog", make_mks_file)
