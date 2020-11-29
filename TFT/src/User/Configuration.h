@@ -260,7 +260,7 @@
  *
  * Options:  0: Disabled    1: Enabled
  */
-#define AUTO_SAVE_LOAD_BL_VALUE 1
+#define AUTO_SAVE_LOAD_BL_VALUE 0
 
 //Type of Leveling ABL, Meshbedleveling , Manual
 //#define AUTO_LEVELING_ABL
