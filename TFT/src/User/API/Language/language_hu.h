@@ -87,7 +87,7 @@
     #define STRING_LOAD                   "Betöltés"
     #define STRING_UNLOAD                 "Kiadás"
     #define STRING_LOAD_UNLOAD            "Betöltés/Kiadás"
-    #define STRING_LOAD_UNLOAD_SHORT      "Ki/Be-töltés"
+    #define STRING_LOAD_UNLOAD_SHORT      "Kiad/Betölt"
     #define STRING_SLOW_SPEED             "Lassú"
     #define STRING_NORMAL_SPEED           "Normál"
     #define STRING_FAST_SPEED             "Gyors"
@@ -279,5 +279,7 @@
     #define STRING_MESH_EDITOR            "Háló Szerkesztő"
     #define STRING_MESH_TUNER             "Háló Hangoló"
     #define STRING_CASE_LIGHT             "Gépház Világítás"
+    #define STRING_LOAD_STARTED           "A betöltési művelet elindult.\nFolyamatban van a fej kívánt\nhőfokának az elérése.\nVárjál!"
+    #define STRING_UNLOAD_STARTED         "A kiadási eljárás elindult.\nFolyamatban van a fej kívánt\nhőfokának az elérése.\nVárjál!"
 
 #endif

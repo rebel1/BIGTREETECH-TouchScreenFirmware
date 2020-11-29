@@ -279,5 +279,7 @@
     #define STRING_MESH_EDITOR            "Mesh düzenle"
     #define STRING_MESH_TUNER             "Mesh ayarlayıcı"
     #define STRING_CASE_LIGHT             "Aydınlatma"
+    #define STRING_LOAD_STARTED           "Filament load procedure started.\nWaiting for the hotend to reach\nthe desired temperature.\nPlease stand by."  // translation needed
+    #define STRING_UNLOAD_STARTED         "Filament unload sequence started.\nWaiting for the hotend to reach\nthe desired temperature.\nPlease stand by."  // translation needed
 
 #endif
