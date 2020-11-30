@@ -226,9 +226,9 @@
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 300
-#define Y_MAX_POS 300
-#define Z_MAX_POS 400
+#define X_MAX_POS 264
+#define Y_MAX_POS 280
+#define Z_MAX_POS 300
 
 // Specify a pause position as { X, Y, Z_raise }
 #define NOZZLE_PAUSE_RETRACT_LENGTH 3   // (mm)
@@ -265,7 +265,7 @@
 //Type of Leveling ABL, Meshbedleveling , Manual
 //#define AUTO_LEVELING_ABL
 //#define LEVELING_MBL
-#define MANUAL_LEVELING
+//#define MANUAL_LEVELING
 
 /**
  * Enable Bed Leveling options
