@@ -237,7 +237,8 @@ void hostActionCommands(void)
     {
       case 0:
         BUZZER_PLAY(sound_notify);
-        popupReminder(DIALOG_TYPE_ALERT,(u8 *)"Message", (u8 *)hostAction.prompt_begin);
+        setDialogText((uint8_t *)"Message", (uint8_t *)hostAction.prompt_begin, LABEL_CONFIRM, LABEL_BACKGROUND);
+        showDialog(DIALOG_TYPE_ALERT, setRunoutAlarmFalse, NULL, NULL);
         break;
       case 1:
         BUZZER_PLAY(sound_notify);
@@ -255,8 +256,12 @@ void hostActionCommands(void)
   if (ack_seen("paused") || ack_seen("pause"))
   {
     infoPrinting.pause = true;
+    if (ack_seen ("filament_runout"))
+    {
+      setRunoutAlarmTrue();
+    }
   }
-  else if (ack_seen("cancel")) //To be added to Marlin abortprint routine
+  else if (ack_seen("cancel"))  //To be added to Marlin abortprint routine
   {
     if (infoHost.printing == true)
     {
@@ -296,6 +301,16 @@ void parseACK(void)
       if (infoSettings.ext_count < infoSettings.hotend_count) infoSettings.ext_count = infoSettings.hotend_count;
       updateNextHeatCheckTime();
       infoHost.connected = true;
+    #ifdef RepRapFirmware
+      if (!ack_seen("@"))  //It's RepRapFirmware
+      {
+        infoMachineSettings.isMarlinFirmware = 0;
+        infoMachineSettings.softwareEndstops = ENABLED;
+        infoHost.wait = false;
+        storeCmd("M92\n");
+        storeCmd("M115\n");
+      }
+    #endif
       if(infoMachineSettings.isMarlinFirmware == -1) // if never connected to the printer since boot
       {
         storeCmd("M503\n");  // Query detailed printer capabilities
@@ -329,6 +344,7 @@ void parseACK(void)
         goto parse_end;
       }
     }
+
     if(requestCommandInfo.inResponse)
     {
       if(strlen(requestCommandInfo.cmd_rev_buf)+strlen(dmaL2Cache) < CMD_MAX_REV)
@@ -417,10 +433,6 @@ void parseACK(void)
 
         infoPrinting.pause = false;
         infoHost.printing = true;
-        if (infoSettings.print_summary)
-        {
-          resetFilamentUsed();
-        }
         infoPrinting.time = 0;
         infoPrinting.cur = 0;
         infoPrinting.size = ack_value();
@@ -451,6 +463,15 @@ void parseACK(void)
       }
 
     //parse and store stepper steps/mm values
+    #ifdef RepRapFirmware
+      else if(ack_seen("Steps"))    // For RepRapFirmware
+      {
+        if(ack_seen("X: ")) setParameter(P_STEPS_PER_MM, X_STEPPER, ack_value());
+        if(ack_seen("Y: ")) setParameter(P_STEPS_PER_MM, Y_STEPPER, ack_value());
+        if(ack_seen("Z: ")) setParameter(P_STEPS_PER_MM, Z_STEPPER, ack_value());
+        if(ack_seen("E: ")) setParameter(P_STEPS_PER_MM, E_STEPPER, ack_value());
+      }
+    #endif
       else if(ack_seen("M92 X"))
       {
                           setParameter(P_STEPS_PER_MM, X_STEPPER, ack_value());
@@ -647,6 +668,10 @@ void parseACK(void)
           string_end = ack_index - sizeof("FIRMWARE_URL:");
         else if (ack_seen("SOURCE_CODE_URL:")) // For Marlin
           string_end = ack_index - sizeof("SOURCE_CODE_URL:");
+      #ifdef RepRapFirmware
+        else if (ack_seen("ELECTRONICS"))  // For RepRapFirmware
+          string_end = ack_index - sizeof("ELECTRONICS");
+      #endif
         infoSetFirmwareName(string, string_end - string_start); // Set firmware name
 
         if (ack_seen("MACHINE_TYPE:"))
@@ -757,21 +782,36 @@ void parseACK(void)
     // parse and store feed rate percentage
       else if(ack_seen("FR:"))
       {
-        speedSetRcvPercent(0,ack_value());
+        speedSetCurPercent(0,ack_value());
         speedQuerySetWait(false);
       }
+    #ifdef RepRapFirmware
+      else if(ack_seen("factor: "))
+      {
+        speedSetCurPercent(0,ack_value());
+        speedQuerySetWait(false);
+      }
+    #endif
     // parse and store flow rate percentage
       else if(ack_seen("Flow: "))
       {
-        speedSetRcvPercent(1,ack_value());
+        speedSetCurPercent(1,ack_value());
         speedQuerySetWait(false);
       }
+    #ifdef RepRapFirmware
+      else if(ack_seen("extruder"))
+      {
+        ack_index+=4;
+        speedSetCurPercent(1,ack_value());
+        speedQuerySetWait(false);
+      }
+    #endif
     // parse fan speed
       else if(ack_seen("M106 P"))
       {
         u8 i = ack_value();
         if (ack_seen("S")) {
-          fanSetRcvSpeed(i, ack_value());
+          fanSetCurSpeed(i, ack_value());
         }
       }
     // parse controller fan
@@ -780,13 +820,13 @@ void parseACK(void)
         u8 i = 0;
         if (ack_seen("S")) {
           i = fanGetTypID(0,FAN_TYPE_CTRL_S);
-          fanSetRcvSpeed(i, ack_value());
-          fanSpeedQuerySetWait(false);
+          fanSetCurSpeed(i, ack_value());
+          fanQuerySetWait(false);
         }
         if (ack_seen("I")) {
           i = fanGetTypID(0,FAN_TYPE_CTRL_I);
-          fanSetRcvSpeed(i, ack_value());
-          fanSpeedQuerySetWait(false);
+          fanSetCurSpeed(i, ack_value());
+          fanQuerySetWait(false);
         }
       }
       else if(ack_seen("Case light: OFF"))
@@ -867,6 +907,29 @@ void parseACK(void)
         {
           ackPopupInfo(echomagic);
         }
+      }
+    // parse filament data from gCode (M118)
+      else if (ack_seen("filament_data"))
+      {
+        if (ack_seen("L:"))
+        {
+          while (((dmaL2Cache[ack_index] < '0') || (dmaL2Cache[ack_index] > '9')) && dmaL2Cache[ack_index] != '\n')
+            ack_index++;
+          filData.length = ack_value();
+        }
+        else if (ack_seen("W:"))
+        {
+          while (((dmaL2Cache[ack_index] < '0') || (dmaL2Cache[ack_index] > '9')) && dmaL2Cache[ack_index] != '\n')
+            ack_index++;
+          filData.weight = ack_value();
+        }
+        else if (ack_seen("C:"))
+        {
+          while (((dmaL2Cache[ack_index] < '0') || (dmaL2Cache[ack_index] > '9')) && dmaL2Cache[ack_index] != '\n')
+            ack_index++;
+          filData.cost = ack_value();
+        }
+        filDataSeen = true;
       }
     }
 

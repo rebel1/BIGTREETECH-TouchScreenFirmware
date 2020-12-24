@@ -12,38 +12,38 @@ const char *const xyzMoveCmd[] = {X_MOVE_GCODE, Y_MOVE_GCODE, Z_MOVE_GCODE};
 
 //1 title, ITEM_PER_PAGE item
 MENUITEMS moveItems = {
-//  title
-LABEL_MOVE,
-// icon                       label
- {
+  // title
+  LABEL_MOVE,
+  // icon                         label
+  {
   #ifdef ALTERNATIVE_MOVE_MENU
-    {ICON_Z_DEC,                LABEL_Z_DEC},
-    {ICON_Y_INC,                LABEL_Y_INC},
-    {ICON_Z_INC,                LABEL_Z_INC},
-    {ICON_01_MM,                LABEL_01_MM},
-    {ICON_X_DEC,                LABEL_X_DEC},
-    {ICON_Y_DEC,                LABEL_Y_DEC},
-    {ICON_X_INC,                LABEL_X_INC},
-    {ICON_BACK,                 LABEL_BACK},
+   {ICON_Z_DEC,                   LABEL_Z_DEC},
+   {ICON_Y_INC,                   LABEL_Y_INC},
+   {ICON_Z_INC,                   LABEL_Z_INC},
+   {ICON_01_MM,                   LABEL_01_MM},
+   {ICON_X_DEC,                   LABEL_X_DEC},
+   {ICON_Y_DEC,                   LABEL_Y_DEC},
+   {ICON_X_INC,                   LABEL_X_INC},
+   {ICON_BACK,                    LABEL_BACK},
   #else
-    {ICON_X_INC,                LABEL_X_INC},
-    {ICON_Y_INC,                LABEL_Y_INC},
-    {ICON_Z_INC,                LABEL_Z_INC},
-    {ICON_01_MM,                LABEL_01_MM},
-    {ICON_X_DEC,                LABEL_X_DEC},
-    {ICON_Y_DEC,                LABEL_Y_DEC},
-    {ICON_Z_DEC,                LABEL_Z_DEC},
-    {ICON_BACK,                 LABEL_BACK},
+   {ICON_X_INC,                   LABEL_X_INC},
+   {ICON_Y_INC,                   LABEL_Y_INC},
+   {ICON_Z_INC,                   LABEL_Z_INC},
+   {ICON_01_MM,                   LABEL_01_MM},
+   {ICON_X_DEC,                   LABEL_X_DEC},
+   {ICON_Y_DEC,                   LABEL_Y_DEC},
+   {ICON_Z_DEC,                   LABEL_Z_DEC},
+   {ICON_BACK,                    LABEL_BACK},
   #endif
- }
+  }
 };
 
 //const uint32_t item_move_speed[] = {DEFAULT_SPEED_MOVE, SPEED_MOVE_SLOW, SPEED_MOVE_FAST};
 
 
 static u8 item_moveLen_index = 1;
-static u32 nextTime = 0;
-static u32 update_time = 500; // 1 seconds is 1000
+static u32 nextGantryTime = 0;
+static u32 update_gantry_time = 500; // 1 seconds is 1000
 
 AXIS nowAxis = X_AXIS;
 
@@ -101,7 +101,6 @@ void menuMove(void)
 
   menuDrawPage(&moveItems);
   mustStoreCmd("G91\n");
-
   mustStoreCmd("M114\n");
   drawXYZ();
 
@@ -120,7 +119,7 @@ void menuMove(void)
         case KEY_ICON_2: storeMoveCmd(Z_AXIS, 1); break;  // Z move up if no invert
 
         case KEY_ICON_3:
-              item_moveLen_index = (item_moveLen_index+1)%ITEM_MOVE_LEN_NUM;
+              item_moveLen_index = (item_moveLen_index + 1) % ITEM_MOVE_LEN_NUM;
               moveItems.items[key_num] = itemMoveLen[item_moveLen_index];
               menuDrawItem(&moveItems.items[key_num], key_num);
               break;
@@ -136,7 +135,7 @@ void menuMove(void)
         case KEY_ICON_2: storeMoveCmd(Z_AXIS, 1); break;  // Z move up if no invert
 
         case KEY_ICON_3:
-              item_moveLen_index = (item_moveLen_index+1)%ITEM_MOVE_LEN_NUM;
+              item_moveLen_index = (item_moveLen_index + 1) % ITEM_MOVE_LEN_NUM;
               moveItems.items[key_num] = itemMoveLen[item_moveLen_index];
               menuDrawItem(&moveItems.items[key_num], key_num);
               break;
@@ -165,11 +164,11 @@ void menuMove(void)
 
 void update_gantry(void)
 {
-  if (OS_GetTimeMs() > nextTime)
+  if (OS_GetTimeMs() > nextGantryTime)
   {
     coordinateQuery();
     drawXYZ();
-    nextTime = OS_GetTimeMs() + update_time;
+    nextGantryTime = OS_GetTimeMs() + update_gantry_time;
   }
 }
 

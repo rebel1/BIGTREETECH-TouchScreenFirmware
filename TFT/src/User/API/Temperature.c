@@ -44,6 +44,15 @@ int16_t heatGetCurrentTemp(uint8_t index)
   return heater.T[index].current;
 }
 
+// Disable all heater/hotends
+void heatCoolDown(void)
+{
+  for (uint8_t i = 0; i < MAX_HEATER_COUNT; i++)
+  {
+    heatSetTargetTemp(i, 0);
+  }
+}
+
 // Is heating waiting to heat up
 bool heatGetIsWaiting(uint8_t index)
 {
@@ -125,8 +134,7 @@ void heatSetUpdateSeconds(uint8_t seconds)
   heat_update_seconds = seconds;
   if (infoMachineSettings.autoReportTemp && !heat_update_waiting)
   {
-    heat_update_waiting = true;
-    storeCmd("M155 ");
+    heat_update_waiting = storeCmd("M155 ");
   }
 }
 
@@ -220,8 +228,7 @@ void loopCheckHeater(void)
       lastTarget[i] = heater.T[i].target;
       if (heat_send_waiting[i] != true)
       {
-        heat_send_waiting[i] = true;
-        storeCmd("%s ", heatCmd[i]);
+        heat_send_waiting[i] = storeCmd("%s ",heatCmd[i]);
       }
     }
   }

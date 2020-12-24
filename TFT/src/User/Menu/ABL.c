@@ -4,7 +4,6 @@
 static uint8_t ublSlot;
 static bool ublIsSaving = true;
 static bool ublSlotSaved = false;
-bool heat = false;
 
 /* called by parseAck() to notify ABL process status */
 void ablUpdateStatus(bool succeeded)
@@ -25,7 +24,9 @@ void ablUpdateStatus(bool succeeded)
     case BL_UBL:
     {
       tempTitle.index = LABEL_ABL_SETTINGS_UBL;
+
       sprintf(&tempMsg[strlen(tempMsg)], "\n %s", textSelect(LABEL_BL_SMART_FILL));
+
       savingEnabled = false;
       break;
     }
@@ -40,6 +41,7 @@ void ablUpdateStatus(bool succeeded)
     if (savingEnabled && infoMachineSettings.EEPROM == 1)
     {
       sprintf(&tempMsg[strlen(tempMsg)], "\n %s", textSelect(LABEL_EEPROM_SAVE_INFO));
+
       setDialogText(tempTitle.index, (u8 *) tempMsg, LABEL_CONFIRM, LABEL_CANCEL);
       showDialog(DIALOG_TYPE_SUCCESS, saveEepromSettings, NULL, NULL);
     }
@@ -51,6 +53,7 @@ void ablUpdateStatus(bool succeeded)
   else                                                     // if bed leveling process failed, provide an error dialog
   {
     BUZZER_PLAY(sound_error);
+
     popupReminder(DIALOG_TYPE_ERROR, tempTitle.index, LABEL_PROCESS_ABORTED);
   }
 }
@@ -63,8 +66,7 @@ void ublSaveloadConfirm(void)
   }
   else
   {
-    storeCmd("G29 S%d\n", ublSlot);
-    ublSlotSaved = true;
+    ublSlotSaved = storeCmd("G29 S%d\n", ublSlot);
   }
 }
 
@@ -107,6 +109,7 @@ void menuUBLSaveLoad(void)
       case KEY_ICON_2:
       case KEY_ICON_3:
         ublSlot = key_num;
+
         setDialogText(UBLSaveLoadItems.title.index, LABEL_CONFIRMATION, LABEL_CONFIRM, LABEL_CANCEL);
         showDialog(DIALOG_TYPE_QUESTION, ublSaveloadConfirm, NULL, NULL);
         break;
@@ -115,12 +118,14 @@ void menuUBLSaveLoad(void)
         if (ublSlotSaved == true && infoMachineSettings.EEPROM == 1)
         {
           ublSlotSaved = false;
+
           setDialogText(LABEL_ABL_SETTINGS_UBL, LABEL_ABL_SLOT_EEPROM, LABEL_CONFIRM, LABEL_CANCEL);
           showDialog(DIALOG_TYPE_QUESTION, saveEepromSettings, NULL, NULL);
         }
         else
         {
           ublSlotSaved = false;
+
           infoMenu.cur--;
         }
         break;
@@ -227,17 +232,17 @@ void menuABL(void)
 
       case KEY_ICON_6:
         infoMenu.menu[++infoMenu.cur] = menuPreheat;
-        heat = true;
         break;
 
       case KEY_ICON_7:
-        if (heat == true)
+        for (uint8_t i = 0; i < MAX_HEATER_COUNT; i++)
         {
-          for (uint8_t i = 0; i < MAX_HEATER_COUNT; i++)
+          if (heatGetTargetTemp(i) > 0)
           {
-            heatSetTargetTemp(i, 0);
+            setDialogText(LABEL_WARNING, LABEL_HEATERS_ON, LABEL_CONFIRM, LABEL_CANCEL);
+            showDialog(DIALOG_TYPE_QUESTION, heatCoolDown, NULL, NULL);
+            break;
           }
-          heat = false;
         }
         infoMenu.cur--;
         break;
