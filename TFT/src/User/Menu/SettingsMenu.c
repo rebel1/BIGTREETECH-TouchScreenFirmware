@@ -6,13 +6,13 @@ const MENUITEMS settingsItems = {
   LABEL_SETTINGS,
   // icon                         label
   {{ICON_SCREEN_SETTINGS,         LABEL_SCREEN_SETTINGS},
-    {ICON_MACHINE_SETTINGS,        LABEL_MACHINE_SETTINGS},
-    {ICON_FEATURE_SETTINGS,        LABEL_FEATURE_SETTINGS},
-    {ICON_SCREEN_INFO,             LABEL_SCREEN_INFO},
-    {ICON_CONNECTION_SETTINGS,     LABEL_CONNECTION_SETTINGS},
-    {ICON_BACKGROUND,              LABEL_BACKGROUND},
-    {ICON_BACKGROUND,              LABEL_BACKGROUND},
-    {ICON_BACK,                    LABEL_BACK},}
+   {ICON_MACHINE_SETTINGS,        LABEL_MACHINE_SETTINGS},
+   {ICON_FEATURE_SETTINGS,        LABEL_FEATURE_SETTINGS},
+   {ICON_SCREEN_INFO,             LABEL_SCREEN_INFO},
+   {ICON_CONNECTION_SETTINGS,     LABEL_CONNECTION_SETTINGS},
+   {ICON_BACKGROUND,              LABEL_BACKGROUND},
+   {ICON_BACKGROUND,              LABEL_BACKGROUND},
+   {ICON_BACK,                    LABEL_BACK},}
 };
 
 const GUI_POINT clocks[] = {
@@ -31,7 +31,8 @@ void infoSetFirmwareName(uint8_t *name, uint8_t name_len)
   if (name_len > sizeof(firmare_name) - 1)
     name_len = sizeof(firmare_name) - 1;
   uint8_t i;
-  for (i = 0; i < name_len; i++) {
+  for (i = 0; i < name_len; i++)
+  {
     firmare_name[i] = name[i];
   }
   firmare_name[i] = 0;
@@ -42,7 +43,8 @@ void infoSetMachineType(uint8_t *machine, uint8_t type_len)
   if (type_len > sizeof(machine_type) - 1)
     type_len = sizeof(machine_type) - 1;
   uint8_t i;
-  for (i = 0; i < type_len; i++) {
+  for (i = 0; i < type_len; i++)
+  {
     machine_type[i] = machine[i];
   }
   machine_type[i] = 0;

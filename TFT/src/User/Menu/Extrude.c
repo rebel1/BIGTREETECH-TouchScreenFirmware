@@ -35,15 +35,15 @@ void menuExtrude(void)
   MENUITEMS extrudeItems = {
     // title
     LABEL_EXTRUDE,
-    // icon                      label
-    {{ICON_UNLOAD,               LABEL_UNLOAD},
-     {ICON_BACKGROUND,           LABEL_BACKGROUND},
-     {ICON_BACKGROUND,           LABEL_BACKGROUND},
-     {ICON_LOAD,                 LABEL_LOAD},
-     {ICON_NOZZLE,               LABEL_NOZZLE},
-     {ICON_E_5_MM,               LABEL_5_MM},
-     {ICON_NORMAL_SPEED,         LABEL_NORMAL_SPEED},
-     {ICON_BACK,                 LABEL_BACK},}
+    // icon                         label
+    {{ICON_UNLOAD,                  LABEL_UNLOAD},
+     {ICON_BACKGROUND,              LABEL_BACKGROUND},
+     {ICON_BACKGROUND,              LABEL_BACKGROUND},
+     {ICON_LOAD,                    LABEL_LOAD},
+     {ICON_NOZZLE,                  LABEL_NOZZLE},
+     {ICON_E_5_MM,                  LABEL_5_MM},
+     {ICON_NORMAL_SPEED,            LABEL_NORMAL_SPEED},
+     {ICON_BACK,                    LABEL_BACK},}
   };
 
   while (infoCmd.count != 0)
@@ -54,15 +54,18 @@ void menuExtrude(void)
   feedrate = coordinateGetFeedRate();
   eRelative = eGetRelative();
 
-  menuDrawPage(&extrudeItems);
-  extrudeCoordinateReDraw(false);
+  if (eRelative) // Set extruder to absolute
+    mustStoreCmd("M82\n");
+
+  extrudeItems.items[KEY_ICON_5] = itemExtLenSteps[extlenSteps_index];
+  extrudeItems.items[KEY_ICON_6] = itemSpeed[itemSpeed_index];
 
   #if LCD_ENCODER_SUPPORT
     encoderPosition = 0;
   #endif
 
-  if (eRelative) // Set extruder to absolute
-    mustStoreCmd("M82\n");
+  menuDrawPage(&extrudeItems);
+  extrudeCoordinateReDraw(false);
 
   while (infoMenu.menu[infoMenu.cur] == menuExtrude)
   {
@@ -74,18 +77,17 @@ void menuExtrude(void)
         break;
 
       case KEY_INFOBOX:
-      {
-        float val = 0;
-        char titlestr[30];
+        {
+          char titlestr[30];
+          sprintf(titlestr, "Min:%i | Max:%i", (extlenSteps[COUNT(extlenSteps) - 1]) * -1, extlenSteps[COUNT(extlenSteps) - 1]);
 
-        sprintf(titlestr, "Min:%i | Max:%i",(extlenSteps[COUNT(extlenSteps)-1]) * -1, extlenSteps[COUNT(extlenSteps)-1]);
-        val = numPadFloat((u8 *)titlestr,0,0,true);
-        eTemp += val;
+          float val = numPadFloat((u8 *) titlestr, 0, 0, true);
+          eTemp += val;
 
-        menuDrawPage(&extrudeItems);
-        extrudeCoordinateReDraw(false);
+          menuDrawPage(&extrudeItems);
+          extrudeCoordinateReDraw(false);
+        }
         break;
-      }
 
       case KEY_ICON_3:
         eTemp += extlenSteps[extlenSteps_index];
@@ -97,13 +99,13 @@ void menuExtrude(void)
         break;
 
       case KEY_ICON_5:
-        extlenSteps_index = (extlenSteps_index+1) % ITEM_EXT_LEN_NUM;
+        extlenSteps_index = (extlenSteps_index + 1) % ITEM_EXT_LEN_NUM;
         extrudeItems.items[key_num] = itemExtLenSteps[extlenSteps_index];
         menuDrawItem(&extrudeItems.items[key_num], key_num);
         break;
 
       case KEY_ICON_6:
-        itemSpeed_index = (itemSpeed_index+1) % ITEM_SPEED_NUM;
+        itemSpeed_index = (itemSpeed_index + 1) % ITEM_SPEED_NUM;
         extrudeItems.items[key_num] = itemSpeed[itemSpeed_index];
         menuDrawItem(&extrudeItems.items[key_num], key_num);
         break;
@@ -116,7 +118,7 @@ void menuExtrude(void)
         #if LCD_ENCODER_SUPPORT
           if (encoderPosition)
           {
-            eTemp += extlenSteps[extlenSteps_index]*encoderPosition;
+            eTemp += extlenSteps[extlenSteps_index] * encoderPosition;
             encoderPosition = 0;
           }
         #endif
@@ -124,16 +126,27 @@ void menuExtrude(void)
     }
     if (extrudeCoordinate != eTemp)
     {
-      extrudeCoordinate = eTemp;
-      extrudeCoordinateReDraw(true);
-      if(curExtruder_index != heatGetCurrentTool())
+      if (curExtruder_index != heatGetCurrentTool())
         storeCmd("%s\n", tool_change[curExtruder_index]);
-      storeCmd("G0 E%.5f F%d\n", extrudeCoordinate, infoSettings.ext_speed[itemSpeed_index]);
+
+      if (heatGetCurrentTemp(curExtruder_index) < infoSettings.min_ext_temp)
+      {
+        char tempMsg[120];
+        LABELCHAR(tempStr, LABEL_EXT_TEMPLOW);
+        sprintf(tempMsg, tempStr, infoSettings.min_ext_temp);
+        popupReminder(DIALOG_TYPE_ERROR, LABEL_COLD_EXT, (u8 *)tempMsg);
+      }
+      else
+      {
+        extrudeCoordinateReDraw(true);
+        extrudeCoordinate = eTemp;
+        storeCmd("G0 E%.5f F%d\n", extrudeCoordinate, infoSettings.ext_speed[itemSpeed_index]);
+      }
     }
     loopProcess();
   }
-  mustStoreCmd("G92 E%.5f\n",eSaved);
-  mustStoreCmd("G0 F%d\n",feedrate);
+  mustStoreCmd("G92 E%.5f\n", eSaved);
+  mustStoreCmd("G0 F%d\n", feedrate);
   if (eRelative)
-    mustStoreCmd("M83\n"); // Set extruder to relative
+    mustStoreCmd("M83\n");  // Set extruder to relative
 }

@@ -30,7 +30,8 @@ void loaditemsCustomGcode()
   for (uint32_t i = 0; i < LISTITEM_PER_PAGE; i++)
   {
     uint32_t item_index = gc_cur_page*LISTITEM_PER_PAGE + i;
-    if (item_index < gcode_num){
+    if (item_index < gcode_num)
+    {
       customItems.items[i].icon = ICONCHAR_CODE;
       customItems.items[i].titlelabel.index = LABEL_DYNAMIC;
       customItems.items[i].titlelabel.address = customcodes->name[item_index];
@@ -48,11 +49,13 @@ void loaditemsCustomGcode()
   }
   else
   {
-    if(gc_cur_page == 0){
+    if(gc_cur_page == 0)
+    {
       customItems.items[5].icon = ICONCHAR_BACKGROUND;
       customItems.items[6].icon = ICONCHAR_PAGEDOWN;
     }
-    else if(gc_cur_page == (gc_page_count-1)){
+    else if(gc_cur_page == (gc_page_count-1))
+    {
       customItems.items[5].icon = ICONCHAR_PAGEUP;
       customItems.items[6].icon = ICONCHAR_BACKGROUND;
     }
@@ -132,17 +135,17 @@ void menuCustom(void)
 void menuRGBSettings(void)
 {
   MENUITEMS RGBItems = {
-  // title
-  LABEL_RGB_SETTINGS,
-  // icon                       label
-   {{ICON_RGB_RED,              LABEL_RED},
-    {ICON_RGB_GREEN,            LABEL_GREEN},
-    {ICON_RGB_BLUE,             LABEL_BLUE},
-    {ICON_RGB_WHITE,            LABEL_WHITE},
-    {ICON_RGB_OFF,              LABEL_OFF},
-    {ICON_BACKGROUND,           LABEL_BACKGROUND},
-    {ICON_BACKGROUND,           LABEL_BACKGROUND},
-    {ICON_BACK,                 LABEL_BACK},}
+    // title
+    LABEL_RGB_SETTINGS,
+    // icon                         label
+    {{ICON_RGB_RED,                 LABEL_RED},
+     {ICON_RGB_GREEN,               LABEL_GREEN},
+     {ICON_RGB_BLUE,                LABEL_BLUE},
+     {ICON_RGB_WHITE,               LABEL_WHITE},
+     {ICON_RGB_OFF,                 LABEL_OFF},
+     {ICON_BACKGROUND,              LABEL_BACKGROUND},
+     {ICON_BACKGROUND,              LABEL_BACKGROUND},
+     {ICON_BACK,                    LABEL_BACK},}
   };
 
   KEY_VALUES key_num = KEY_IDLE;
@@ -184,7 +187,7 @@ void menuRGBSettings(void)
   }
 }
 
-#if QUICK_EEPROM_BUTTON == 1
+#ifdef QUICK_EEPROM_BUTTON
 
 void menuEepromSettings(void)
 {
@@ -250,6 +253,7 @@ void menuEepromSettings(void)
     loopProcess();
   }
 }
+
 #endif // QUICK_EEPROM_BUTTON
 
 void menuMachineSettings(void)
@@ -264,20 +268,18 @@ void menuMachineSettings(void)
      {ICON_CUSTOM,                  LABEL_CUSTOM},
      {ICON_RGB_SETTINGS,            LABEL_RGB_SETTINGS},
      {ICON_TUNING,                  LABEL_TUNING},
-    #if QUICK_EEPROM_BUTTON == 1
-      {ICON_EEPROM_SAVE,             LABEL_EEPROM_SETTINGS},
-    #else
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-    #endif
+  #ifdef QUICK_EEPROM_BUTTON
+     {ICON_EEPROM_SAVE,             LABEL_EEPROM_SETTINGS},
+  #else
+     {ICON_BACKGROUND,              LABEL_BACKGROUND},
+  #endif
      {ICON_BACKGROUND,              LABEL_BACKGROUND},
      {ICON_BACK,                    LABEL_BACK}}
   };
 
   const ITEM itemCaseLight = {ICON_CASE_LIGHT, LABEL_CASE_LIGHT};
   if (infoMachineSettings.caseLightsBrightness == ENABLED)
-  {
     machineSettingsItems.items[KEY_ICON_6] = itemCaseLight;
-  }
 
   KEY_VALUES key_num = KEY_IDLE;
   menuDrawPage(&machineSettingsItems);
@@ -307,16 +309,14 @@ void menuMachineSettings(void)
       infoMenu.menu[++infoMenu.cur] = menuTuning;
       break;
 
-    #if QUICK_EEPROM_BUTTON == 1
+    #ifdef QUICK_EEPROM_BUTTON
       case KEY_ICON_5:
         infoMenu.menu[++infoMenu.cur] = menuEepromSettings;
         break;
     #endif
     case KEY_ICON_6:
       if (infoMachineSettings.caseLightsBrightness == ENABLED)
-      {
         infoMenu.menu[++infoMenu.cur] = menuCaseLight;
-      }
       break;
 
     case KEY_ICON_7:

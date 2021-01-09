@@ -1,17 +1,7 @@
 #include "Babystep.h"
 #include "includes.h"
 
-#define ITEM_BABYSTEP_UNIT_NUM 3
-
-const ITEM itemBabyStep_steps[ITEM_BABYSTEP_UNIT_NUM] = {
-  // icon                         label
-  {ICON_001_MM,                   LABEL_001_MM},
-  {ICON_01_MM,                    LABEL_01_MM},
-  {ICON_1_MM,                     LABEL_1_MM},
-};
-
-const float babystep_steps[ITEM_BABYSTEP_UNIT_NUM] = {0.01f, 0.1f, 1};
-static u8 babystep_steps_index = 0;
+static u8 moveLenSteps_index = 0;
 
 void babyReDraw(float babystep, float z_offset, bool force_z_offset, bool skip_header)
 {
@@ -67,7 +57,7 @@ void menuBabystep(void)
      {ICON_BACK,                    LABEL_BACK},}
   };
 
-  #if FRIENDLY_PROBE_OFFSET_LANGUAGE == 1
+  #ifdef FRIENDLY_PROBE_OFFSET_LANGUAGE
     babyStepItems.items[0].icon = ICON_NOZZLE_DOWN;
     babyStepItems.items[0].label.index = LABEL_DOWN;
     babyStepItems.items[3].icon = ICON_NOZZLE_UP;
@@ -79,8 +69,8 @@ void menuBabystep(void)
   float now_z_offset, z_offset, orig_z_offset;
   float unit;
   bool force_z_offset;
-  float (* offsetGetValue)(void);                          // get current Z offset
-  float (* offsetSetValue)(float);                         // set current Z offset
+  float (* offsetGetValue)(void);   // get current Z offset
+  float (* offsetSetValue)(float);  // set current Z offset
 
   if (infoMachineSettings.zProbe == ENABLED)
   {
@@ -103,20 +93,20 @@ void menuBabystep(void)
     babyStepItems.items[KEY_ICON_4].label.index = LABEL_SAVE;
   }
 
-  babyStepItems.items[KEY_ICON_5] = itemBabyStep_steps[babystep_steps_index];
+  babyStepItems.items[KEY_ICON_5] = itemMoveLen[moveLenSteps_index];
 
   menuDrawPage(&babyStepItems);
   babyReDraw(now_babystep, now_z_offset, force_z_offset, false);
 
-#if LCD_ENCODER_SUPPORT
-  encoderPosition = 0;
-#endif
+  #if LCD_ENCODER_SUPPORT
+    encoderPosition = 0;
+  #endif
 
   while (infoMenu.menu[infoMenu.cur] == menuBabystep)
   {
-    unit = babystep_steps[babystep_steps_index];
+    unit = moveLenSteps[moveLenSteps_index];
 
-    babystep = babystepGetValue();                         // always load current babystep
+    babystep = babystepGetValue();  // always load current babystep
 
     key_num = menuKeyGetValue();
     switch (key_num)
@@ -135,7 +125,8 @@ void menuBabystep(void)
       case KEY_ICON_4:
         if (infoMachineSettings.EEPROM == 1)
         {
-          offsetSetValue(z_offset);                        // set new Z offset
+          offsetSetValue(z_offset);  // set new Z offset
+
           setDialogText(babyStepItems.title.index, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
           showDialog(DIALOG_TYPE_QUESTION, saveEepromSettings, NULL, NULL);
         }
@@ -143,8 +134,10 @@ void menuBabystep(void)
 
       // change unit
       case KEY_ICON_5:
-        babystep_steps_index = (babystep_steps_index + 1) % ITEM_BABYSTEP_UNIT_NUM;
-        babyStepItems.items[key_num] = itemBabyStep_steps[babystep_steps_index];
+        moveLenSteps_index = (moveLenSteps_index + 1) % ITEM_FINE_MOVE_LEN_NUM;
+
+        babyStepItems.items[key_num] = itemMoveLen[moveLenSteps_index];
+
         menuDrawItem(&babyStepItems.items[key_num], key_num);
         break;
 
@@ -162,13 +155,14 @@ void menuBabystep(void)
           if (encoderPosition)
           {
             babystep = babystepUpdateValueByEncoder(unit, encoderPosition > 0 ? 1 : -1);
+
             encoderPosition = 0;
           }
         #endif
         break;
     }
 
-    z_offset = offsetGetValue();                           // always load current Z offset
+    z_offset = offsetGetValue();  // always load current Z offset
 
     if (now_babystep != babystep || now_z_offset != z_offset)
     {

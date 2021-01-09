@@ -282,8 +282,18 @@
     #define STRING_LOAD_STARTED           "Carico filamento in corso...\nNon sono possibili altre\nazioni fino al termine.\nAttendere prego."
     #define STRING_UNLOAD_STARTED         "Scarico filamento in corso...\nNon sono possibili altre\nazioni fino al termine.\nAttendere prego."
     #define STRING_HEATERS_ON             "Alcuni riscaldatori sono ancora accesi\nVuoi spegnerli?"
-    #define STRING_PRINT_TOTAL_TIME       "Print complete.\nPrint Time: %02u:%02u:%02u \n"  // translation needed
-    #define STRING_PRINT_FILAMENT_USED    "Filament Used: %3.2f meters"  // translation needed
-    #define STRING_PRINT_SUMMARY          "Print Summary Popup"  // translation needed
+    #define STRING_PRINT_FINISHED         "   Stampa\n   finita."  // keep it short and in this format!
+    #define STRING_MAIN_SCREEN            "Principale"
+    #define STRING_PREVIOUS_PRINT_DATA    "Ultima stampa"
+    #define STRING_FILE_NAME              "File: "
+    #define STRING_PRINT_TIME             "Durata stampa: "
+    #define STRING_FILAMENT_LENGTH        "Lunghezza filamento: %1.2fm"
+    #define STRING_FILAMENT_WEIGHT        "Peso filamento: %1.2fg"
+    #define STRING_FILAMENT_COST          "Costo filamento: %1.2f"
+    #define STRING_NO_FILAMENT_STATS      "Nessuna statistica del filamento."
+    #define STRING_CLICK_FOR_MORE         "Clicca per piu' info."
+    #define STRING_EXT_TEMPLOW            "La temperatura dell'hotend\nè al di sotto della temperatura\nminima (%d℃)."
+    #define STRING_COLD_EXT               "Prevenzione dell'estrusione a freddo"
+    #define STRING_HEAT_HOTEND            "Heat hotend to %d℃?"
 
 #endif
