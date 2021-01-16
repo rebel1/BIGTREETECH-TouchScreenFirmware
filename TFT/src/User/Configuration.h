@@ -171,15 +171,20 @@
 //Axes names displayed in Parameter Settings menu
 #define AXIS_DISPLAY_ID  {"X",  "Y",  "Z",   "E",  "E2"} // (X, Y, Z, E, E2)
 
-// Default move speed mm/min
-#define DEFAULT_SPEED_MOVE      2000
-#define SPEED_MOVE_SLOW         1000
-#define SPEED_MOVE_FAST         3000
+// Default X & Y speed (mm/min)
+#define SPEED_XY_SLOW   1000
+#define SPEED_XY_NORMAL 3000
+#define SPEED_XY_FAST   5000
 
-// Extrude speed mm/min
-#define EXTRUDE_SLOW_SPEED      60
-#define EXTRUDE_NORMAL_SPEED    500
-#define EXTRUDE_FAST_SPEED      800
+// Default Z speed (mm/min)
+#define SPEED_Z_SLOW   500
+#define SPEED_Z_NORMAL 1000
+#define SPEED_Z_FAST   2000
+
+// Extrude speed (mm/min)
+#define EXTRUDE_SLOW_SPEED     60
+#define EXTRUDE_NORMAL_SPEED  600
+#define EXTRUDE_FAST_SPEED   1200
 
 // Size of machine
 #define X_MIN_POS 0
@@ -256,6 +261,17 @@
  * Options: [0: Disabled, 1: Auto-detect, 2: ABL, 3: BBL, 4: UBL, 5: MBL]
  */
 #define ENABLE_BL_VALUE 1 // Default: 1
+
+/** TouchMI settings (on ABL menu)
+ * 
+ * Enable this option for settings TouchMI sensor on ABL Menu.
+ * 
+ * ( Init, Zoffset, Save, test)
+ * 
+ * Options: [enable:1, disable:0]
+ * 
+ */
+#define TOUCHMI_SENSOR_VALUE 0 // Default: 0
 
 // Mesh Leveling Max Grid points
 // Set the maximum number of grid points per dimension
