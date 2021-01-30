@@ -2,7 +2,7 @@
 #define _LANGUAGE_DE_H_
 
     // config.ini Parameter Settings / Feature Settings
-    #define STRING_STATUS_SCREEN          "Enable Status Screen"
+    #define STRING_STATUS_SCREEN          "Aktiviere Status Screen"
     #define STRING_BAUDRATE               "Baudrate"
     #define STRING_LANGUAGE               "Deutsch"
     #define STRING_ROTATE_UI              "UI drehen"
@@ -335,7 +335,7 @@
     #define STRING_NOTIFICATIONS          "Benachrichtigungen"
     #define STRING_MESH_EDITOR            "Mesh edit."
     #define STRING_MESH_TUNER             "Mesh anp."
-    #define STRING_CASE_LIGHT             "Case Licht"
+    #define STRING_CASE_LIGHT             "Gehäuselicht"
     #define STRING_LOAD_STARTED           "Lade Filament.\nBitte auf Abschluss des\nVorgangs warten."
     #define STRING_UNLOAD_STARTED         "Entlade Filament.\nBitte auf Abschluss des\nVorgangs warten."
     #define STRING_HEATERS_ON             "Einige Heizer sind noch eingeschaltet.\nSollen diese deaktiviert werden?"
