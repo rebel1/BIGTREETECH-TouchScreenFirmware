@@ -56,7 +56,7 @@
   * @{
   */
 
-extern uint32_t SystemCoreClock;          /*!< System Clock Frequency (Core Clock) */
+//extern uint32_t SystemCoreClock;          /*!< System Clock Frequency (Core Clock) */
 
 
 /**
@@ -82,9 +82,9 @@ extern uint32_t SystemCoreClock;          /*!< System Clock Frequency (Core Cloc
 /** @addtogroup STM32F2xx_System_Exported_Functions
   * @{
   */
-  
-extern void SystemInit(void);
-extern void SystemCoreClockUpdate(void);
+
+extern void SystemClockInit(void);
+//extern void SystemCoreClockUpdate(void);
 /**
   * @}
   */
