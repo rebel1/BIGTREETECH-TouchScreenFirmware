@@ -169,7 +169,7 @@
 #define SPEED_ID {"Sp.", "Fr."}  // (speed, flow rate)
 
 // Axes names displayed in Parameter Settings menu
-#define AXIS_DISPLAY_ID  {"X",  "Y",  "Z",   "E",  "E2"}  // (X, Y, Z, E, E2)
+#define AXIS_DISPLAY_ID  {"X",  "Y",  "Z",   "E0",  "E1"}  // (X, Y, Z, E0, E1)
 
 // Default X & Y speed (mm/min)
 #define SPEED_XY_SLOW   1000
@@ -187,16 +187,20 @@
 #define EXTRUDE_FAST_SPEED   1200
 
 // Size of machine
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
-#define Z_MIN_POS 0
+#define X_MIN_POS   0
+#define Y_MIN_POS   0
+#define Z_MIN_POS   0
 #define X_MAX_POS 300
 #define Y_MAX_POS 300
 #define Z_MAX_POS 400
 
-// Specify a pause position as { X, Y, Z_raise }
-#define NOZZLE_PAUSE_RETRACT_LENGTH 3   // (mm)
-#define NOZZLE_RESUME_PURGE_LENGTH  4   // (mm)
+// Is this a Delta printer
+#define IS_DELTA             false
+#define DELTA_MBL_Z_DROP_MM  50 // MBL Drop 50mm first after home avoid crashing into the top of the towers.
+
+// Pause Settings
+#define NOZZLE_PAUSE_RETRACT_LENGTH               15  // (mm)
+#define NOZZLE_RESUME_PURGE_LENGTH                16  // (mm)
 #define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
 #define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10)  // (mm) Must be an integer
 #define NOZZLE_PAUSE_Z_RAISE                      20  // (mm)
