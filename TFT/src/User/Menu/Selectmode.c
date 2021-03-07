@@ -30,18 +30,13 @@ void drawModeIcon(void)
   };
 
   GUI_RestoreColorDefault();
-
-  if(infoSettings.marlin_type == LCD12864)
-    GUI_DispStringInPrect(&mode_title_rect[0],(uint8_t *)"LCD12864 Mode");
-  else
-    GUI_DispStringInPrect(&mode_title_rect[0],(uint8_t *)"LCD2004 Mode");
-
+  GUI_DispStringInPrect(&mode_title_rect[0],(uint8_t *)"Marlin Mode");
   GUI_DispStringInPrect(&mode_title_rect[1],(uint8_t *)"Touch Mode");
 }
 
 bool LCD_ReadPen(uint16_t intervals)
 {
-  static u32 TouchTime = 0;
+  static uint32_t TouchTime = 0;
   if(!XPT2046_Read_Pen())
   {
     if(OS_GetTimeMs() - TouchTime >= intervals)
@@ -81,7 +76,7 @@ void loopCheckMode(void)
 //  but before I can allow that I need a way to make sure that we swap back into
 //  the right mode (and correct screen) and I really want a reliable way to DETECT
 //  that the TFT should be in printing mode even when the print was started externally.
-  if(isPrinting() || skipMode)
+  if(isPrinting() || infoHost.printing || skipMode)
     return;
 
   if(infoMenu.menu[infoMenu.cur] == menuMode)
@@ -164,9 +159,12 @@ void menuMode(void)
 // Setup hardware for selected UI mode
 static inline void setupModeHardware(uint8_t mode)
 {
-  Serial_ReSourceInit();  // enable serial comm by default
+  if (infoSettings.serial_alwaysOn == ENABLED)
+    Serial_ReSourceInit(); // disable serial comm if `serial_alwaysOn` is disabled
+
   if (mode == MODE_SERIAL_TSC)
   {
+    Serial_ReSourceInit();  // enable serial comm in TSC mode
     #ifdef BUZZER_PIN // enable buzzer in Touchsreen mode
       Buzzer_Config();
     #endif
@@ -192,7 +190,7 @@ static inline void setupModeHardware(uint8_t mode)
 
     #if LED_COLOR_PIN
       #ifndef KEEP_KNOB_LED_COLOR_MARLIN_MODE  // enable knob led in marlin mode
-      knob_LED_DeInit();
+        knob_LED_DeInit();
       #endif
     #endif
 
@@ -225,7 +223,7 @@ void switchMode(void)
       #ifdef SHOW_BTT_BOOTSCREEN
         if (freshBoot)
         {
-          u32 startUpTime = OS_GetTimeMs();
+          uint32_t startUpTime = OS_GetTimeMs();
           heatSetUpdateSeconds(TEMPERATURE_QUERY_FAST_SECONDS);
           LOGO_ReadDisplay();
           updateNextHeatCheckTime();  // send "M105" after a delay, because of mega2560 will be hanged when received data at startup
@@ -240,7 +238,7 @@ void switchMode(void)
       break;
 
     case MODE_MARLIN:
-      #if defined(ST7920_SPI) || defined(LCD2004_simulator)
+      #ifdef HAS_EMULATOR
         if (infoSettings.serial_alwaysOn == ENABLED)
           updateNextHeatCheckTime();  // send "M105" after a delay, because of mega2560 will be hanged when received data at startup
         infoMenu.menu[infoMenu.cur] = menuMarlinMode;

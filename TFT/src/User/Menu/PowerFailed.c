@@ -62,7 +62,7 @@ void powerFailedCache(u32 offset)
     }
     infoBreakPoint.tool = heatGetCurrentTool();
 
-    for(u8 i = 0; i < infoSettings.fan_count; i++)
+    for(uint8_t i = 0; i < infoSettings.fan_count; i++)
     {
       infoBreakPoint.fan[i] = fanGetCurSpeed(i);
     }
@@ -187,7 +187,7 @@ bool powerOffGetData(void)
 
 void menuPowerOff(void)
 {
-  u16 key_num = IDLE_TOUCH;
+  uint16_t key_num = IDLE_TOUCH;
   clearPowerFailed();
   GUI_Clear(infoSettings.bg_color);
 
@@ -195,8 +195,13 @@ void menuPowerOff(void)
 
   if(mountFS()==true && powerFailedExist())
   {
+    char okTxt[50];
+    char cancelTxt[50];
+    loadLabelText((uint8_t*)okTxt, LABEL_CONFIRM);
+    loadLabelText((uint8_t*)cancelTxt, LABEL_CANCEL);
+
     popupDrawPage(DIALOG_TYPE_QUESTION, bottomDoubleBtn, textSelect(LABEL_POWER_FAILED), (u8* )infoFile.title,
-                    textSelect(LABEL_CONFIRM), textSelect(LABEL_CANCEL));
+                  (uint8_t*)okTxt, (uint8_t*)cancelTxt);
 
     while(infoMenu.menu[infoMenu.cur]==menuPowerOff)
     {
