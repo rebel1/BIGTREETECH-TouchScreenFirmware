@@ -34,7 +34,6 @@ void loadMinTemp_OK(void)
 void menuLoadUnload(void)
 {
   KEY_VALUES key_num = KEY_IDLE;
-  float eBackup = ((infoFile.source >= BOARD_SD) ? coordinateGetAxisActual(E_AXIS) : coordinateGetAxisTarget(E_AXIS));
 
   while (infoCmd.count != 0)
   {
@@ -70,18 +69,18 @@ void menuLoadUnload(void)
       {
         case KEY_ICON_0:  // Unload
         case KEY_ICON_3:  // Load
-          if (warmupTemperature(tool_index, loadMinTemp_OK))
+          if (!warmupTemperature(tool_index, loadMinTemp_OK))
           {
-            if (key_num == KEY_ICON_0)
-            { // unload
-              mustStoreCmd("M702 T%d\n", tool_index);
-              lastCmd = UNLOAD;
-            }
-            else
-            { // load
-              mustStoreCmd("M701 T%d\n", tool_index);
-              lastCmd = LOAD;
-            }
+          }
+          else if (key_num == KEY_ICON_0)
+          { // unload
+            mustStoreCmd("M702 T%d\n", tool_index);
+            lastCmd = UNLOAD;
+          }
+          else
+          { // load
+            mustStoreCmd("M701 T%d\n", tool_index);
+            lastCmd = LOAD;
           }
           break;
 
@@ -116,5 +115,4 @@ void menuLoadUnload(void)
 
     loopProcess();
   }
-  mustStoreCmd("G92 E%.5f\n", eBackup);  // reset E axis position in Marlin to pre - load/unload state
 }
