@@ -358,11 +358,11 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define FIL_RUNOUT_INVERTING 1  // Default: 1
+#define FIL_RUNOUT_INVERTING 0  // Default: 1
 
 // Filament Noise Threshold
 // Pause print when filament runout is detected at least for this time period.
-#define FIL_NOISE_THRESHOLD 100   // Default: 100 (ms)
+#define FIL_NOISE_THRESHOLD 500   // Default: 100 (ms)
 
 // Smart Filament Runout Detection
 // For use with an encoder disc that toggles runout pin as filament moves.
