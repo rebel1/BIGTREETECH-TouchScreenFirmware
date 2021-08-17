@@ -331,7 +331,7 @@ static inline void reDrawPrintingValue(uint8_t icon_pos, uint8_t draw_type)
 
   if (!(draw_type & PRINT_ICON))
     ICON_PrepareReadEnd();
-} // reDrawPrintingValue
+}  // reDrawPrintingValue
 
 static inline void toggleInfo(void)
 {
@@ -348,7 +348,14 @@ static inline void toggleInfo(void)
     {
       currentBCIndex = (currentBCIndex + 1) % 2;
       RAPID_SERIAL_LOOP();  // perform backend printing loop before drawing to avoid printer idling
-      reDrawPrintingValue(ICON_POS_BED, PRINT_ICON | PRINT_TOP_ROW | PRINT_BOTTOM_ROW);
+
+      #ifdef UNIFORM_LIVE_TEXT_BG_COLOR  // it allows to eliminate flickering on alternating icons
+        ICON_PartialReadDisplay(rect_of_keyPS[ICON_POS_BED].x0, rect_of_keyPS[ICON_POS_BED].y0, PICON_TITLE_X, -1,
+                                (currentBCIndex == 0) ? ICON_PRINTING_BED : ICON_PRINTING_CHAMBER, 0, 0);
+        reDrawPrintingValue(ICON_POS_BED, PRINT_TOP_ROW | PRINT_BOTTOM_ROW);
+      #else
+        reDrawPrintingValue(ICON_POS_BED, PRINT_ICON | PRINT_TOP_ROW | PRINT_BOTTOM_ROW);
+      #endif
     }
     else
     {
@@ -371,7 +378,7 @@ static inline void toggleInfo(void)
     RAPID_SERIAL_LOOP();  // perform backend printing loop before drawing to avoid printer idling
 
     #ifdef UNIFORM_LIVE_TEXT_BG_COLOR  // it allows to eliminate flickering on alternating icons
-      ICON_PartialReadDisplay(printinfo_points[ICON_POS_SPD].x, printinfo_points[ICON_POS_SPD].y, PICON_TITLE_X, -1,
+      ICON_PartialReadDisplay(rect_of_keyPS[ICON_POS_SPD].x0, rect_of_keyPS[ICON_POS_SPD].y0, PICON_TITLE_X, -1,
                               (currentSpeedID == 0) ? ICON_PRINTING_SPEED : ICON_PRINTING_FLOW, 0, 0);
       reDrawPrintingValue(ICON_POS_SPD, PRINT_TOP_ROW | PRINT_BOTTOM_ROW);
     #else
@@ -431,8 +438,8 @@ static inline void reDrawProgress(uint8_t prevProgress)
 static inline void printingDrawPage(void)
 {
   #ifdef UNIFORM_LIVE_TEXT_BG_COLOR  // it samples the background color from an icon
-    ICON_PrepareRead(printinfo_points[ICON_POS_EXT].x, printinfo_points[ICON_POS_EXT].y, ICON_PRINTING_NOZZLE);
-    textBgColor = ICON_ReadPixel(printinfo_points[ICON_POS_EXT].x + PICON_TITLE_X, printinfo_points[ICON_POS_EXT].y + PICON_TITLE_Y);
+    ICON_PrepareRead(rect_of_keyPS[ICON_POS_EXT].x0, rect_of_keyPS[ICON_POS_EXT].y0, ICON_PRINTING_NOZZLE);
+    textBgColor = ICON_ReadPixel(rect_of_keyPS[ICON_POS_EXT].x0 + PICON_TITLE_X, rect_of_keyPS[ICON_POS_EXT].y0 + PICON_TITLE_Y);
     ICON_PrepareReadEnd();
   #endif
 
@@ -464,7 +471,7 @@ void drawPrintInfo(void)
 
   GUI_SetColor(INFOMSG_COLOR);
   GUI_SetBkColor(INFOMSG_BKCOLOR);
-  GUI_DispStringInPrect(&msgRect,LABEL_CLICK_FOR_MORE);
+  GUI_DispStringInPrect(&msgRect, LABEL_CLICK_FOR_MORE);
   GUI_RestoreColorDefault();
 }
 
@@ -555,18 +562,14 @@ void menuPrinting(void)
     printingItems.items[KEY_ICON_4] = itemIsPause[lastPause];
     printingItems.items[KEY_ICON_5].icon = (infoFile.source < BOARD_SD && isPrintModelIcon()) ? ICON_PREVIEW : ICON_BABYSTEP;
   }
-  else // returned to this menu after a print was done (ex: after a popup)
+  else  // returned to this menu after a print was done (ex: after a popup)
   {
     printingItems.title.address = (uint8_t *)infoPrintSummary.name;
 
-    #ifdef TFT70_V3_0
-      printingItems.items[KEY_ICON_5] = itemIsPrinting[1];  // MainScreen
-    #else
-      printingItems.items[KEY_ICON_4] = itemIsPrinting[1];  // MainScreen
-      printingItems.items[KEY_ICON_5] = itemIsPrinting[0];  // BackGround
-    #endif
-      printingItems.items[KEY_ICON_6] = itemIsPrinting[0];  // BackGround
-      printingItems.items[KEY_ICON_7] = itemIsPrinting[2];  // Back
+    printingItems.items[KEY_ICON_4] = itemIsPrinting[1];  // MainScreen
+    printingItems.items[KEY_ICON_5] = itemIsPrinting[0];  // BackGround
+    printingItems.items[KEY_ICON_6] = itemIsPrinting[0];  // BackGround
+    printingItems.items[KEY_ICON_7] = itemIsPrinting[2];  // Back
   }
 
   menuDrawPage(&printingItems);
@@ -754,29 +757,16 @@ void menuPrinting(void)
           else
             printPause(!isPaused(), PAUSE_NORMAL);
         }
-        #ifndef TFT70_V3_0
-          else
-          {
-            clearInfoPrint();
-            clearInfoFile();
-            infoMenu.cur = 0;
-          }
-        #endif
+        else
+        {
+          clearInfoPrint();
+          clearInfoFile();
+          infoMenu.cur = 0;
+        }
         break;
 
       case PS_KEY_7:
-        #ifdef TFT70_V3_0
-          if (isPrinting())
-            infoMenu.menu[++infoMenu.cur] = menuBabystep;
-          else
-          {
-            clearInfoPrint();
-            clearInfoFile();
-            infoMenu.cur = 0;
-          }
-        #else
-          infoMenu.menu[++infoMenu.cur] = menuBabystep;
-        #endif
+        infoMenu.menu[++infoMenu.cur] = menuBabystep;
         break;
 
       case PS_KEY_8:
