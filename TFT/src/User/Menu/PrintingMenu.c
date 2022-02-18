@@ -1,50 +1,48 @@
 #include "Printing.h"
 #include "includes.h"
 
-#ifdef PORTRAIT
-  const GUI_RECT printinfo_val_rect[6] = { //LABELS
-    {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
+const GUI_RECT printinfo_val_rect[6] = {
+#ifdef PORTRAIT_MODE
+  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_SM_EX,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_SM_EX, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
-    
-    {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_SM_EX,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
-  };
+  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
+
+  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_SM_EX, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
 #else
-  const GUI_RECT printinfo_val_rect[6] = { //LABELS
-    {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_SM_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_SM_EX, PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
+  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1+PICON_VAL_LG_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
 
-    {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
-     START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_SM_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
-  };
+  {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_X,     PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y,
+   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_VAL_SM_EX, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1+PICON_VAL_Y+BYTE_HEIGHT},
 #endif
+};
 
-#define PROGRESS_BAR_RAW_X0 (START_X)                             // X0 aligned to first icon
-#ifdef PORTRAIT
+#define PROGRESS_BAR_RAW_X0   (START_X)                             // X0 aligned to first icon
+#ifdef PORTRAIT_MODE
   #define PROGRESS_BAR_RAW_X1 (START_X + 3*ICON_WIDTH + 2*SPACE_X)  // X1 aligned to last icon
 #else
   #define PROGRESS_BAR_RAW_X1 (START_X + 4*ICON_WIDTH + 3*SPACE_X)  // X1 aligned to last icon
@@ -63,7 +61,7 @@
 #define PROGRESS_BAR_FULL_WIDTH  (PROGRESS_BAR_X1 - PROGRESS_BAR_X0)  // 100% progress bar width
 #define PROGRESS_BAR_SLICE_WIDTH (PROGRESS_BAR_FULL_WIDTH / 10)       // 10% progress bar width
 
-#ifdef PORTRAIT
+#ifdef PORTRAIT_MODE
   const GUI_RECT progressBar = {PROGRESS_BAR_X0, TITLE_END_Y + 1,
                                 PROGRESS_BAR_X1, PICON_START_Y - PICON_SPACE_Y - 1};
 #else
@@ -90,7 +88,6 @@ LAYER_TYPE layerDisplayType;
 
 #define TOGGLE_TIME  2000  // 1 seconds is 1000
 #define LAYER_DELTA  0.1   // minimal layer height change to update the layer display (avoid congestion in vase mode)
-
 #define LAYER_TITLE  "Layer"
 
 enum
@@ -111,7 +108,7 @@ const ITEM itemIsPause[2] = {
 
 const ITEM itemIsPrinting[3] = {
   // icon                        label
-  {ICON_BACKGROUND,              LABEL_BACKGROUND},
+  {ICON_NULL,                    LABEL_NULL},
   {ICON_MAINMENU,                LABEL_MAIN_SCREEN},
   {ICON_BACK,                    LABEL_BACK},
 };
@@ -174,7 +171,7 @@ void menuBeforePrinting(void)
         break;
       }
 
-    case TFT_UDISK:
+    case TFT_USB_DISK:
     case TFT_SD:  // GCode from file on TFT SD
       {
         FIL file;
@@ -519,7 +516,7 @@ void stopConfirm(void)
   CLOSE_MENU();
 }
 
-void printInfoPopup(void)
+void printSummaryPopup(void)
 {
   uint8_t hour = infoPrintSummary.time / 3600;
   uint8_t min = infoPrintSummary.time % 3600 / 60;
@@ -559,15 +556,15 @@ void menuPrinting(void)
   // 1 title, ITEM_PER_PAGE items (icon + label)
   MENUITEMS printingItems = {
     // title
-    LABEL_BACKGROUND,
+    LABEL_NULL,
     // icon                          label
     {
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BABYSTEP},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_BABYSTEP},
       {ICON_MORE,                    LABEL_MORE},
       {ICON_STOP,                    LABEL_STOP},
     }
@@ -592,29 +589,27 @@ void menuPrinting(void)
 
   if (lastPrinting == true)
   {
-    if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-      printingItems.title.address = (uint8_t *) infoFile.longFile[infoFile.fileIndex];
-    else
-      printingItems.title.address = getPrintName(infoFile.title);
-
     printingItems.items[KEY_ICON_4] = itemIsPause[lastPause];
     printingItems.items[KEY_ICON_5].icon = (infoFile.source < BOARD_SD && isPrintModelIcon()) ? ICON_PREVIEW : ICON_BABYSTEP;
   }
   else  // returned to this menu after a print was done (ex: after a popup)
   {
-    printingItems.title.address = (uint8_t *)infoPrintSummary.name;
-
     printingItems.items[KEY_ICON_4] = itemIsPrinting[1];  // MainScreen
     printingItems.items[KEY_ICON_5] = itemIsPrinting[0];  // BackGround
     printingItems.items[KEY_ICON_6] = itemIsPrinting[0];  // BackGround
     printingItems.items[KEY_ICON_7] = itemIsPrinting[2];  // Back
   }
 
+  // hide filename extension if filename extension feature is disabled
+  printingItems.title.address = hideFilenameExtension(infoFile.fileIndex);
+
   menuDrawPage(&printingItems);
   printingDrawPage();
 
-  if (lastPrinting == false)
-    drawPrintInfo();
+  #ifndef PORTRAIT_MODE
+    if (lastPrinting == false)
+      drawPrintInfo();
+  #endif
 
   while (MENU_IS(menuPrinting))
   {
@@ -739,6 +734,12 @@ void menuPrinting(void)
     if (lastPrinting != isPrinting())
     {
       lastPrinting = isPrinting();
+
+      #ifdef PORTRAIT_MODE
+        if (lastPrinting == false)
+          printSummaryPopup();
+      #endif
+
       return;  // It will restart this interface if directly return this function without modify the value of infoMenu
     }
 
@@ -748,12 +749,12 @@ void menuPrinting(void)
     switch (key_num)
     {
       case PS_KEY_0:
-        heatSetCurrentIndex(currentTool);
+        heatSetCurrentIndex(-1);  // set last used hotend index
         OPEN_MENU(menuHeat);
         break;
 
       case PS_KEY_1:
-        heatSetCurrentIndex(BED + currentBCIndex);
+        heatSetCurrentIndex(-2);  // set last used bed index
         OPEN_MENU(menuHeat);
         break;
 
@@ -767,7 +768,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_4:
-        layerDisplayType ++;  // trigger cleaning previous values
+        layerDisplayType++;  // trigger cleaning previous values
         if (layerDisplayType != CLEAN_LAYER_HEIGHT)
         {
           reDrawPrintingValue(ICON_POS_Z, PRINT_TOP_ROW);
@@ -787,7 +788,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_6:
-        if (isPrinting())
+        if (lastPrinting == true)  // if printing
         { // Pause button
           if (getHostDialog() || isRemoteHostPrinting())
             addToast(DIALOG_TYPE_ERROR, (char *)textSelect(LABEL_BUSY));
@@ -813,7 +814,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_9:
-        if (isPrinting())
+        if (lastPrinting == true)  // if printing
         {
           if (isRemoteHostPrinting())
           {
@@ -833,7 +834,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_INFOBOX:
-        printInfoPopup();
+        printSummaryPopup();
         break;
 
       default:

@@ -91,7 +91,6 @@ bool getPrintRunout(void);
 
 void printSetUpdateWaiting(bool isWaiting);           // called in interfaceCmd.c
 void updatePrintUsedFilament(void);                   // called in PrintingMenu.c
-uint8_t * getPrintName(char * path);                  // called in PrintingMenu.c
 void clearInfoPrint(void);                            // called in PrintingMenu.c
 
 void printComplete(void);                             // print complete
@@ -103,6 +102,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType);
 
 bool isPrinting(void);
 bool isPaused(void);
+bool isTFTPrinting(void);
 bool isRemoteHostPrinting(void);
 
 void setPrintAbort(void);

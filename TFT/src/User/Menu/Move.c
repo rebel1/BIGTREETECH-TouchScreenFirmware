@@ -1,8 +1,6 @@
 #include "Move.h"
 #include "includes.h"
 
-//const GUI_RECT RecXYZ = {START_X + 1*ICON_WIDTH,        STATUS_GANTRY_YOFFSET,
-//                         4*ICON_WIDTH+3*SPACE_X+START_X,ICON_START_Y-STATUS_GANTRY_YOFFSET};
 #define X_MOVE_GCODE "G1 X%.2f F%d\n"
 #define Y_MOVE_GCODE "G1 Y%.2f F%d\n"
 #define Z_MOVE_GCODE "G1 Z%.2f F%d\n"
@@ -31,7 +29,7 @@ void drawXYZ(void)
   char tempstr[20];
   GUI_SetColor(infoSettings.status_color);
 
- #ifdef PORTRAIT
+  #ifdef PORTRAIT_MODE
     sprintf(tempstr, "X:%.2f  Y:%.2f  Z:%2.f", coordinateGetAxisActual(X_AXIS), coordinateGetAxisActual(Y_AXIS),
             coordinateGetAxisActual(Z_AXIS));
     GUI_DispString(START_X + 1 * SPACE_X + 1 * ICON_WIDTH, (ICON_START_Y - BYTE_HEIGHT) / 2, (uint8_t *)tempstr);

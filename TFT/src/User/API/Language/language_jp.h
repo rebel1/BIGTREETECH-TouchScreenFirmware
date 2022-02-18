@@ -4,6 +4,7 @@
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_EMULATED_M600          "Emulated M600"
     #define STRING_EMULATED_M109_M190     "Emulated M109 / M190"
+    #define STRING_EVENT_LED              "Event LED"
     #define STRING_FILE_COMMENT_PARSING   "File comment parsing"
     #define STRING_ROTATED_UI             "回転UI"
     #define STRING_LANGUAGE               "日本語"
@@ -35,6 +36,7 @@
     #define STRING_LCD_IDLE_BRIGHTNESS    "LCDの輝度が薄暗い"
     #define STRING_LCD_IDLE_TIME          "LCD調光アイドルタイマー"
     #define STRING_LCD_LOCK_ON_IDLE       "LCD lock on idle"
+    #define STRING_LED_ALWAYS_ON          "LED always ON"
     #define STRING_KNOB_LED_COLOR         "回転ノブLED"
     #define STRING_KNOB_LED_IDLE          "Rotary Knob LED idle"
     #define STRING_START_GCODE_ENABLED    "印刷前にGコードを開始する"
@@ -151,7 +153,7 @@
     #define STRING_INFO                   "情報"
     #define STRING_INVALID_VALUE          "Invalid value(s)"
     #define STRING_TIMEOUT_REACHED        "Timeout reached!"
-    #define STRING_DISCONNECT_INFO        "SDカード　PC両用"
+    #define STRING_DISCONNECT_INFO        "SDカード PC両用"
     #define STRING_SHUTTING_DOWN          "シャットダウン..."
     #define STRING_WAIT_TEMP_SHUT_DOWN    "ホットエンドの温度が%d℃未満になるまで待ちます。" // Wait for the temperature of hotend to be lower than 50℃
     #define STRING_POWER_FAILED           "プリントを継続しますか?"
@@ -159,15 +161,17 @@
     #define STRING_PROCESS_COMPLETED      "Process completed!"
     #define STRING_PROCESS_ABORTED        "Process aborted!"
 
-    // TFT SD, U_DISK, Onboard SD, Filament Runout Process Commands / Status / Info
+    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
     #define STRING_TFTSD                  "TFT SD"
     #define STRING_READ_TFTSD_ERROR       "TFT SDカードの読み取りがエラー発生しました!"
     #define STRING_TFTSD_INSERTED         "SDカード入りました!"
     #define STRING_TFTSD_REMOVED          "SDカード出しました!"
-    #define STRING_U_DISK                 "USBメモリー"
-    #define STRING_READ_U_DISK_ERROR      "USBメモリー読み込みエラー!"
-    #define STRING_U_DISK_INSERTED        "U Diskカード入りました!"
-    #define STRING_U_DISK_REMOVED         "U Diskカード出しました!"
+    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
+    #define STRING_USB_DISK               "USBメモリー"
+    #define STRING_READ_USB_DISK_ERROR    "USBメモリー読み込みエラー!"
+    #define STRING_USB_DISK_INSERTED      "U Diskカード入りました!"
+    #define STRING_USB_DISK_REMOVED       "U Diskカード出しました!"
+    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
     #define STRING_ONBOARDSD              "内部 mSDカード"
     #define STRING_READ_ONBOARDSD_ERROR   "内部 mSDカードの読み取りがエラー発生しました!"
     #define STRING_FILAMENT_RUNOUT        "フィラメントランアウト!"

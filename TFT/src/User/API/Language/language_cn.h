@@ -4,6 +4,7 @@
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_EMULATED_M600          "模拟M600"
     #define STRING_EMULATED_M109_M190     "Emulated M109 / M190"
+    #define STRING_EVENT_LED              "Event LED"
     #define STRING_FILE_COMMENT_PARSING   "File comment parsing"
     #define STRING_ROTATED_UI             "旋转界面"
     #define STRING_LANGUAGE               "简体中文"
@@ -35,6 +36,7 @@
     #define STRING_LCD_IDLE_BRIGHTNESS    "LCD睡眠背光亮度"
     #define STRING_LCD_IDLE_TIME          "LCD自动睡眠时间"
     #define STRING_LCD_LOCK_ON_IDLE       "LCD lock on idle"
+    #define STRING_LED_ALWAYS_ON          "LED always ON"
     #define STRING_KNOB_LED_COLOR         "旋钮LED颜色"
     #define STRING_KNOB_LED_IDLE          "旋钮LED自动睡眠"
     #define STRING_START_GCODE_ENABLED    "执行打印前起始Gcode"
@@ -159,15 +161,17 @@
     #define STRING_PROCESS_COMPLETED      "处理已完成!"
     #define STRING_PROCESS_ABORTED        "处理已被中断!"
 
-    // TFT SD, U_DISK, Onboard SD, Filament Runout Process Commands / Status / Info
+    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
     #define STRING_TFTSD                  "TFT SD"
     #define STRING_READ_TFTSD_ERROR       "读TFT SD卡出错!"
     #define STRING_TFTSD_INSERTED         "SD卡已插入!"
     #define STRING_TFTSD_REMOVED          "SD卡已拔出!"
-    #define STRING_U_DISK                 "U盘"
-    #define STRING_READ_U_DISK_ERROR      "读U盘出错!"
-    #define STRING_U_DISK_INSERTED        "U盘已插入!"
-    #define STRING_U_DISK_REMOVED         "U盘已拔出!"
+    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
+    #define STRING_USB_DISK               "U盘"
+    #define STRING_READ_USB_DISK_ERROR    "读U盘出错!"
+    #define STRING_USB_DISK_INSERTED      "U盘已插入!"
+    #define STRING_USB_DISK_REMOVED       "U盘已拔出!"
+    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
     #define STRING_ONBOARDSD              "板载SD"
     #define STRING_READ_ONBOARDSD_ERROR   "读板载SD卡出错!"
     #define STRING_FILAMENT_RUNOUT        "耗材已用尽,请更换耗材!"
