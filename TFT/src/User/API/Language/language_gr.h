@@ -16,6 +16,8 @@
     #define STRING_PERSISTENT_INFO        "Πληροφορίες μόνιμης κατάστασης"
     #define STRING_TERMINAL_ACK           "Εμφάνιση ACK στο τερματικό"
     #define STRING_SERIAL_ALWAYS_ON       "Serial Always ON"
+    #define STRING_SHOW_BOOTSCREEN        "Show Bootscreen"
+    #define STRING_ALERT_HEATERS_ON       "Alert that heaters are still on" 
     #define STRING_MARLIN_FULLSCREEN      "Λειτουργία Marlin σε πλήρη οθόνη"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin Mode Title Support"
     #define STRING_MARLIN_TYPE            "Marlin Mode Type"
@@ -59,6 +61,7 @@
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
     #define STRING_DELTA_CONFIGURATION    "Delta Configuration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
     #define STRING_DELTA_ENDSTOP          "Endstop Adjustments"
     #define STRING_PROBE_OFFSET           "Αντιστάθμιση Καθετήρας"
     #define STRING_LIN_ADVANCE            "Linear Advance"
@@ -173,6 +176,7 @@
     #define STRING_USB_DISK_REMOVED       "Ο USB Δίσκος αφαιρέθηκε!"
     #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
     #define STRING_ONBOARDSD              "Ενσωματωμένη κάρτα SD"
+    #define STRING_ONBOARDUSB             "Ενσωματωμένη κάρτα USB"
     #define STRING_READ_ONBOARDSD_ERROR   "Σφάλμα ανάγνωσης ενσωματωμένης κάρτας SD!"
     #define STRING_FILAMENT_RUNOUT        "τελείωσε το νημά!"
 
@@ -189,6 +193,8 @@
     #define STRING_DEPLOY                 "Επέκταση"
     #define STRING_STOW                   "Aπόσυρση"
     #define STRING_REPEAT                 "Επανάληψη"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Στόμιο"

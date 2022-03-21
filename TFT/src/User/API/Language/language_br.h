@@ -59,6 +59,7 @@
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
     #define STRING_DELTA_CONFIGURATION    "Configuração Delta"
     #define STRING_DELTA_TOWER_ANGLE      "Guarnição do ângulo da torre" //
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
     #define STRING_DELTA_ENDSTOP          "Ajustes de fim de curso"
     #define STRING_PROBE_OFFSET           "OFFSET da Sonda"
     #define STRING_LIN_ADVANCE            "Avanço linear"
@@ -173,7 +174,8 @@
     #define STRING_USB_DISK_REMOVED       "Pen Drive removido!"
     #define STRING_USB_DISK_NOT_DETECTED  "USB Disk não detectado"
     #define STRING_ONBOARDSD              "SD ONBOARD"
-    #define STRING_READ_ONBOARDSD_ERROR   "Erro de leitura do SD ONBOARD!"
+    #define STRING_ONBOARDUSB             "USB ONBOARD"
+    #define STRING_READ_ONBOARDSD_ERROR   "Erro de leitura do onboard media!"
     #define STRING_FILAMENT_RUNOUT        "Filamento acabou!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -189,6 +191,8 @@
     #define STRING_DEPLOY                 "Lança"
     #define STRING_STOW                   "Retrai"
     #define STRING_REPEAT                 "Repete"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Hotend"

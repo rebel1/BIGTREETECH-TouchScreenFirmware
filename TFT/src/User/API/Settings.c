@@ -54,6 +54,8 @@ void initSettings(void)
   infoSettings.notification_m117      = NOTIFICATION_M117;
   infoSettings.prog_disp_type         = PROG_DISP_TYPE;
   infoSettings.layer_disp_type        = LAYER_DISP_TYPE;
+  infoSettings.show_bootscreen        = SHOW_BOOTSCREEN;
+  infoSettings.alert_heaters_on       = ALERT_HEATERS_ON;
 
 // Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
   infoSettings.mode                   = DEFAULT_MODE;
@@ -198,6 +200,7 @@ void initMachineSettings(void)
   infoMachineSettings.emergencyParser         = DISABLED;
   infoMachineSettings.promptSupport           = DISABLED;
   infoMachineSettings.onboardSD               = DISABLED;
+  infoMachineSettings.multiVolume             = DISABLED;
   infoMachineSettings.autoReportSDStatus      = DISABLED;
   infoMachineSettings.longFilename            = DISABLED;
   infoMachineSettings.babyStepping            = DISABLED;

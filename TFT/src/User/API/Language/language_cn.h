@@ -16,6 +16,8 @@
     #define STRING_PERSISTENT_INFO        "顶部温度信息"
     #define STRING_TERMINAL_ACK           "在G-code终端中显示温度信息"
     #define STRING_SERIAL_ALWAYS_ON       "串口常开"
+    #define STRING_SHOW_BOOTSCREEN        "Show Bootscreen"
+    #define STRING_ALERT_HEATERS_ON       "Alert that heaters are still on" 
     #define STRING_MARLIN_FULLSCREEN      "全屏显示Marlin模式"
     #define STRING_MARLIN_SHOW_TITLE      "Marlin模式显示标题"
     #define STRING_MARLIN_TYPE            "Marlin模式类型"
@@ -59,6 +61,7 @@
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
     #define STRING_DELTA_CONFIGURATION    "Delta Configuration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
     #define STRING_DELTA_ENDSTOP          "Endstop Adjustments"
     #define STRING_PROBE_OFFSET           "探针偏移量"
     #define STRING_LIN_ADVANCE            "Linear Advance"
@@ -173,7 +176,8 @@
     #define STRING_USB_DISK_REMOVED       "U盘已拔出!"
     #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
     #define STRING_ONBOARDSD              "板载SD"
-    #define STRING_READ_ONBOARDSD_ERROR   "读板载SD卡出错!"
+    #define STRING_ONBOARDUSB             "板载USB"
+    #define STRING_READ_ONBOARDSD_ERROR   "主機板的存儲介質讀取失敗!"
     #define STRING_FILAMENT_RUNOUT        "耗材已用尽,请更换耗材!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -189,6 +193,8 @@
     #define STRING_DEPLOY                 "探针弹出"
     #define STRING_STOW                   "探针收回"
     #define STRING_REPEAT                 "精度测试"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "喷头"
