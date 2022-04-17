@@ -12,7 +12,6 @@ typedef struct
   uint32_t   remainingTime;       // current remaining time in sec (if set with M73 or M117)
   uint16_t   layerNumber;
   uint16_t   layerCount;
-  uint8_t    prevProgress;
   uint8_t    progress;
   bool       progressFromSlicer;  // 1: progress controlled by Slicer (if set with M73)
   bool       runout;              // 1: runout in printing, 0: idle
@@ -167,27 +166,16 @@ void setPrintProgressPercentage(uint8_t percentage)
   infoPrinting.progress = percentage;
 }
 
-bool updatePrintProgress(void)
+void updatePrintProgress(void)
 {
-  uint8_t prevProgress = infoPrinting.prevProgress;
+  if (infoPrinting.progressFromSlicer)  // avoid to update progress if it is controlled by slicer
+    return;
 
-  if (!infoPrinting.progressFromSlicer)  // avoid to update progress if it is controlled by slicer
-  {
-    // in case not printing or a wrong size was set, we consider progress as 100%
-    if (infoPrinting.size == 0)  // avoid a division for 0 (a crash) and set progress to 100%
-      infoPrinting.progress = 100;
-    else
-      infoPrinting.progress = MIN((uint64_t)((infoPrinting.cur - infoPrinting.offset) * 100 / (infoPrinting.size - infoPrinting.offset)), 100);
-  }
-
-  if (infoPrinting.progress != prevProgress)
-  {
-    infoPrinting.prevProgress = infoPrinting.progress;
-
-    return true;
-  }
-
-  return false;
+  // in case not printing or a wrong size was set, we consider progress as 100%
+  if (infoPrinting.size == 0)  // avoid a division for 0 (a crash) and set progress to 100%
+    infoPrinting.progress = 100;
+  else
+    infoPrinting.progress = MIN((uint32_t)((infoPrinting.cur - infoPrinting.offset) * 100 / (infoPrinting.size - infoPrinting.offset)), 100);
 }
 
 uint8_t getPrintProgress(void)
@@ -448,7 +436,10 @@ bool printStart(void)
 
   if (infoFile.source == FS_ONBOARD_MEDIA)
   {
-    infoHost.status = HOST_STATUS_PRINTING;
+    // let setPrintResume() (that will be called in parseAck.c by parsing ACK message for M24 or M27)
+    // notify the print as started (infoHost.status set to "HOST_STATUS_PRINTING")
+    infoHost.status = HOST_STATUS_RESUMING;
+
     request_M24(0);                              // start print from onboard media
     request_M27(infoSettings.m27_refresh_time);  // use gcode M27 in case of a print running from onboard media
   }
@@ -510,8 +501,6 @@ void printAbort(void)
 
     case FS_ONBOARD_MEDIA:
     case FS_ONBOARD_MEDIA_REMOTE:
-      //infoHost.status = HOST_STATUS_IDLE;  // Not so fast! Let Marlin tell that it's done!
-
       // several M108 are sent to Marlin because consecutive blocking operations
       // such as heating bed, extruder may defer processing of M524
       breakAndContinue();
@@ -531,15 +520,15 @@ void printAbort(void)
         request_M0();  // M524 is not supported in RepRap firmware
       }
 
-      if (isHostPrinting())
-      {
-        setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
-        showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
+      setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
+      showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
 
-        infoHost.status = HOST_STATUS_STOPPING;
+      // let setPrintPause() (that will be called in parseAck.c by parsing ACK message for M524, M25 or M27)
+      // notify the print as aborted/completed (infoHost.status set to "HOST_STATUS_IDLE") instead of paused
+      infoHost.status = HOST_STATUS_STOPPING;
 
-        loopProcessToCondition(&isHostPrinting);  // wait for the printer to settle down
-      }
+      // wait until infoHost.status is set to "HOST_STATUS_IDLE" by setPrintPause()
+      loopProcessToCondition(&isHostPrinting);
 
       break;
 
@@ -711,7 +700,9 @@ void setPrintAbort(void)
 
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 {
-  // in case print was aborted or completed or printAbort() is aborting the print, nothing to do
+  // in case print was completed or printAbort() is aborting the print,
+  // nothing to do (infoHost.status must be set to "HOST_STATUS_IDLE"
+  // in case it is "HOST_STATUS_STOPPING" just to finalize the print abort)
   if (infoHost.status <= HOST_STATUS_STOPPING)
   {
     infoHost.status = HOST_STATUS_IDLE;  // wakeup printAbort() if waiting for print completion
@@ -735,7 +726,8 @@ void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 
 void setPrintResume(HOST_STATUS hostStatus)
 {
-  // in case print was aborted or completed or printAbort() is aborting the print, nothing to do
+  // in case print was completed or printAbort() is aborting the print,
+  // nothing to do (infoHost.status must never be changed)
   if (infoHost.status <= HOST_STATUS_STOPPING)
     return;
 
