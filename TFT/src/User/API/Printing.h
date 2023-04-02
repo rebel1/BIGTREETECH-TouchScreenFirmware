@@ -22,18 +22,18 @@ extern "C" {
 
 typedef enum
 {
-  PAUSE_NORMAL = 0,
-  PAUSE_M0,
-  PAUSE_EXTERNAL,
-} PAUSE_TYPE;
-
-typedef enum
-{
   PROG_FILE = 0,  // file execution progress ()
   PROG_RRF,       // progress from RRF ("fraction_printed")
   PROG_TIME,      // time based progress (elapsed/total)
   PROG_SLICER,    // progress from slicer (M73)
 } PROG_FROM;
+
+typedef enum
+{
+  PAUSE_NORMAL = 0,
+  PAUSE_M0,
+  PAUSE_EXTERNAL,
+} PAUSE_TYPE;
 
 typedef struct
 {
@@ -74,15 +74,23 @@ uint16_t getPrintLayerNumber();
 void setPrintLayerCount(uint16_t layerCount);
 uint16_t getPrintLayerCount();
 
-uint32_t getPrintSize(void);
-uint32_t getPrintCur(void);
+void setPrintProgressSource(PROG_FROM progressSource);
+PROG_FROM getPrintProgressSource(void);
 
-void setPrintProgData(float cur, float size);
-void setPrintProgPercentage(uint8_t percentage);  // used by M73 Pxx and RRF
+//
+// used for print based on gcode file
+//
+uint32_t getPrintDataSize(void);
+uint32_t getPrintDataCur(void);
+void setPrintProgressData(float cur, float size);
+
+//
+// used for print based on M73 Pxx or RRF
+//
+void setPrintProgressPercentage(uint8_t percentage);
+
 uint8_t updatePrintProgress(void);
 uint8_t getPrintProgress(void);
-PROG_FROM getPrintProgSource(void);
-void setPrintProgSource(PROG_FROM progressSource);
 
 void setPrintRunout(bool runout);
 bool getPrintRunout(void);
@@ -97,36 +105,36 @@ bool getPrintRunout(void);
 //void preparePrintSummary(void);
 //void sendPrintCodes(uint8_t index);
 
-void printSetUpdateWaiting(bool isWaiting);           // called in interfaceCmd.c
-void updatePrintUsedFilament(void);                   // called in PrintingMenu.c
-void clearInfoPrint(void);                            // called in PrintingMenu.c
+void setPrintUpdateWaiting(bool isWaiting);  // called in interfaceCmd.c
+void updatePrintUsedFilament(void);          // called in PrintingMenu.c
+void clearInfoPrint(void);                   // called in PrintingMenu.c
 
 //
 // commented because NOT externally invoked
 //
-//void printComplete(void);                           // print complete
+//void completePrint(void);                           // complete a print (finalize stats etc.)
 
-// start print originated or handled by remote host
+// start print originated and/or hosted (handled) by remote host
 // (e.g. print started from remote onboard media or hosted by remote host)
-bool printRemoteStart(const char * filename);
+bool startPrintFromRemoteHost(const char * filename);
 
-// start print originated or handled by TFT
-// (e.g. print started from TFT's GUI or hosted by TFT)
-bool printStart(void);                                // it also sends start gcode
+// start print originated and/or hosted (handled) by TFT
+// (e.g. print started from onboard media or hosted by TFT)
+bool startPrint(void);                                // it also sends start gcode
 
-void printEnd(void);                                  // it also sends end gcode
-void printAbort(void);                                // it also sends cancel gcode
-bool printPause(bool isPause, PAUSE_TYPE pauseType);
+void endPrint(void);                                  // it also sends end gcode
+void abortPrint(void);                                // it also sends cancel gcode
+bool pausePrint(bool isPause, PAUSE_TYPE pauseType);
 
-bool isPrinting(void);
-bool isPaused(void);
-bool isAborted(void);
-bool isTFTPrinting(void);
-bool isHostPrinting(void);
-bool isRemoteHostPrinting(void);
+bool isPrinting(void);                // return "true" in case a print is ongoing
+bool isPaused(void);                  // return "true" in case a print is paused
+bool isAborted(void);                 // return "true" in case a print is aborted/canceled
+bool isPrintingFromTFT(void);         // return "true" in case a print hosted (handled) by TFT is ongoing
+bool isPrintingFromHost(void);        // return "true" in case a print hosted (handled) by onboard (host) is ongoing
+bool isPrintingFromRemoteHost(void);  // return "true" in case a print hosted (handled) by remote host is ongoing
 
 //
-// used for print originated or handled by remote host
+// used for print hosted (handled) by onboard or remote host
 // (e.g. print started from (remote) onboard media or hosted by remote host)
 //
 void setPrintAbort(void);

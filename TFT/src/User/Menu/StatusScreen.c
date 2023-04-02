@@ -212,15 +212,9 @@ void statusScreen_setReady(void)
   strncpy(msgTitle, (char *)textSelect(LABEL_STATUS), sizeof(msgTitle));
 
   if (infoHost.connected == false)
-  {
     strncpy(msgBody, (char *)textSelect(LABEL_UNCONNECTED), sizeof(msgBody));
-  }
   else
-  {
-    strncpy(msgBody, (char *)machine_type, sizeof(msgBody));
-    strcat(msgBody, " ");
-    strcat(msgBody, (char *)textSelect(LABEL_READY));
-  }
+    snprintf(msgBody, sizeof(msgBody), "%s %s", (char *)machine_type, (char *)textSelect(LABEL_READY));
 
   msgNeedRefresh = true;
 }
@@ -265,7 +259,7 @@ static inline void toggleTool(void)
 
     // switch bed/chamber index
     if (infoSettings.chamber_en == 1)
-      currentBCIndex = (currentBCIndex + 1) % 2;
+      TOGGLE_BIT(currentBCIndex, 0);
 
     // increment fan index
     if ((infoSettings.fan_count + infoSettings.ctrl_fan_en) > 1)
@@ -277,7 +271,7 @@ static inline void toggleTool(void)
     }
 
     // switch speed/flow
-    currentSpeedID = (currentSpeedID + 1) % 2;
+    TOGGLE_BIT(currentSpeedID, 0);
     drawStatus();
 
     // gcode queries must be call after drawStatus
